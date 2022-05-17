@@ -8,7 +8,7 @@ create table Organizations(
     Post_code smallint(5) default null,
     Street varchar(20) default null,
     City varchar(20) not null,
-    Org_type varchar(20) not null,
+    Org_type varchar(20) not null check (Org_type in ('University', 'Coorporation', 'Research_center')),
     primary key (Organization_id)
     #add more constrains
     )ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -18,7 +18,7 @@ create table Researcher(
     First_name varchar(20) not null,
 	Last_name varchar(20) not null,
 	Birthdate date not null,
-    Sex varchar(20) default null, #politically correct
+    Sex varchar(20) default null check (Sex in ('Female', 'Male', 'Other')),
     Start_date_work_org date not null,
     Organization_id int unsigned, 
     primary key (Researcher_id),
@@ -54,7 +54,7 @@ create table Coorporation(
 create table Evaluation(
 	Evaluation_id int unsigned  auto_increment, 
 	Eval_date date not null,
-    Grade varchar(2) default null,
+    Grade int default null check(Grade<=100 and Grade>=0),
     Researcher_id int unsigned,
     primary key(Evaluation_id),
     constraint fk_researcher_id_evaluation foreign key(Researcher_id) references Researcher(Researcher_id) on delete restrict on update cascade
