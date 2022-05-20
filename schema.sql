@@ -6,6 +6,7 @@ USE eldik_db;
 create table Organizations(
 	Organization_id int unsigned auto_increment,
     Org_name varchar(50) not null,
+    Abbreviation varchar(10) not null,
     Post_code smallint(5) not null,
     Street varchar(20) not null,
     City varchar(20) not null,
@@ -57,9 +58,11 @@ create table Evaluation(
 	Eval_date date not null,
     Grade int default 0 check(Grade<=100 and Grade>=0),
     Researcher_id int unsigned ,
+    Organization_id int unsigned,
     #check the one who does  the eval researcher_id does not belong to organization_id from project
     primary key(Evaluation_id),
-    constraint fk_researcher_id_evaluation foreign key(Researcher_id) references Researcher(Researcher_id) on delete set null on update cascade
+    constraint fk_researcher_id_evaluation foreign key(Researcher_id) references Researcher(Researcher_id) on delete set null on update cascade,
+    constraint fk_organization_id_evaluation foreign key(Organization_id) references Organizations(Organization_id) on delete set null on update cascade
     #more constrains
     )ENGINE=InnoDB DEFAULT CHARSET=utf8;
     
@@ -144,13 +147,10 @@ DELIMITER $$
 create trigger evaluator_check before insert on Evaluation
 for each row
 begin 
-if new.Researcher_id in(
-		select r.Researcher_id 
-		from Researcher r
-		inner join Works_on_project w
-		on w.Researcher_id = r.Researcher_id
-		inner join Project p
-		on p.project_id = w.project_id)
+if new.Organization_id = (
+		select r.Organization_id
+        from Researcher r
+        where new.Researcher_id = r.Researcher_id)
 then
 signal sqlstate '45000';
 end if;
@@ -176,6 +176,17 @@ begin
     end$$
     
 DELIMITER ;
+
+DELIMITER $$
+create trigger duration_check before insert on Project
+for each row
+begin 
+if (select TIMESTAMPDIFF(Year, new.End_Date, new.Start_Date)) not in (1,2,3,4)
+then
+signal sqlstate '45000';
+end if;
+end$$
+DELIMITER 
  
  
 
