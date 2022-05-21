@@ -7,10 +7,10 @@ create table Organizations(
 	Organization_id int unsigned auto_increment,
     Org_name varchar(50) not null,
     Abbreviation varchar(10) not null,
-    Post_code smallint(5) not null,
+    Post_code int(5) not null,
     Street varchar(20) not null,
     City varchar(20) not null,
-    Org_type varchar(20) not null check (Org_type in ('University', 'Coorporation', 'Research_center')),
+    Org_type varchar(20) not null check (Org_type in ('University', 'Corporation', 'Research_center')),
     primary key (Organization_id)
     #add more constrains
     )ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -45,11 +45,11 @@ create table University(
     #add triggers when changing organization
     )ENGINE=InnoDB DEFAULT CHARSET=utf8;
     
-create table Coorporation(
+create table corporation(
 	Organization_id int unsigned,
     Equity int default null,
     primary key(Organization_id),
-    constraint fk_organization_id_coorporation foreign key (Organization_id) references Organizations(Organization_id) on delete cascade on update cascade 
+    constraint fk_organization_id_corporation foreign key (Organization_id) references Organizations(Organization_id) on delete cascade on update cascade 
     #add triggers when changing organization
     )ENGINE=InnoDB DEFAULT CHARSET=utf8;
     
@@ -99,6 +99,7 @@ create table Scientific_field(
 create table Project(
 	Project_id int unsigned  auto_increment,
 	Amount int default 0, #when we insert amount we have to check if eval greater than 50
+    Title varchar(20) not null,
 	Start_Date date default null, 
 	End_Date date  default null,
     Project_description Varchar(400) default null,
@@ -165,8 +166,8 @@ for each row
 begin
 		if new.Org_type = 'University'
 			then insert into University  values(new.Organization_id,null);
-		 else if new.Org_type = 'Coorporation'
-			then insert into Coorporation values(new.Organization_id,null);
+		 else if new.Org_type = 'corporation'
+			then insert into corporation values(new.Organization_id,null);
 		 else if new.Org_type = 'Research_center'
 			then insert into Research_center values(new.Organization_id,null,null);
 	else signal sqlstate '02000' set message_text = 'Wrong type!!';
@@ -186,7 +187,9 @@ then
 signal sqlstate '45000';
 end if;
 end$$
-DELIMITER 
+
+ 
+
  
  
 
