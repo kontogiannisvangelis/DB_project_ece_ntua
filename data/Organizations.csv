@@ -1,31 +1,31 @@
 id,name,abbreviation,post code,street,city,type
-1,Organization 1,Org1,29108,Magnolia 6,Arta,University
-2,Organization 2,Org2,60307,King 1,Volos,Corporation
-3,Organization 3,Org3,59051,Redwood 5,Arta,Research_center
-4,Organization 4,Org4,29123,Redwood 5,Arta,University
-5,Organization 5,Org5,19151,Magnolia 6,Larisa,University
-6,Organization 6,Org6,51047,Front Street 10,Arta,Corporation
-7,Organization 7,Org7,88818,Laurel 8,Athens,University
-8,Organization 8,Org8,10870,King 1,Volos,University
-9,Organization 9,Org9,70484,Hickory 4,Arta,University
-10,Organization 10,Org10,83196,Laurel 8,Arta,University
-11,Organization 11,Org11,80684,Hickory 4,Larisa,University
-12,Organization 12,Org12,99432,King 1,Arta,University
-13,Organization 13,Org13,14178,Laurel 8,Arta,Corporation
-14,Organization 14,Org14,23203,Myrtle 9,Larisa,University
-15,Organization 15,Org15,51368,Hudson 2,Athens,Corporation
-16,Organization 16,Org16,98391,Front Street 10,Larisa,Research_center
-17,Organization 17,Org17,34708,Front Street 10,Athens,University
-18,Organization 18,Org18,62248,Lexington 7,Larisa,Research_center
-19,Organization 19,Org19,78850,King 1,Athens,Research_center
-20,Organization 20,Org20,63716,King 1,Arta,Corporation
-21,Organization 21,Org21,98608,Redwood 5,Thessalonicki,University
-22,Organization 22,Org22,24111,King 1,Athens,Corporation
-23,Organization 23,Org23,27384,Sherman 3,Arta,Research_center
-24,Organization 24,Org24,53704,Lexington 7,Athens,Corporation
-25,Organization 25,Org25,40852,King 1,Arta,University
-26,Organization 26,Org26,49509,Magnolia 6,Thessalonicki,University
-27,Organization 27,Org27,35538,Sherman 3,Athens,Corporation
-28,Organization 28,Org28,17011,Myrtle 9,Larisa,Research_center
-29,Organization 29,Org29,30935,Lexington 7,Athens,Corporation
-30,Organization 30,Org30,95059,Hickory 4,Volos,Research_center
+1,Organization 1,Org1,17789,Hudson 2,Volos,Corporation
+2,Organization 2,Org2,17061,Hickory 4,Thessalonicki,University
+3,Organization 3,Org3,58300,Hudson 2,Volos,Corporation
+4,Organization 4,Org4,50217,Redwood 5,Thessalonicki,Research_center
+5,Organization 5,Org5,84424,Myrtle 9,Arta,University
+6,Organization 6,Org6,96014,Myrtle 9,Arta,Corporation
+7,Organization 7,Org7,39752,Sherman 3,Arta,University
+8,Organization 8,Org8,10717,Hudson 2,Athens,Research_center
+9,Organization 9,Org9,67390,Magnolia 6,Volos,University
+10,Organization 10,Org10,82024,Lexington 7,Athens,University
+11,Organization 11,Org11,55917,Laurel 8,Arta,Research_center
+12,Organization 12,Org12,28466,Laurel 8,Thessalonicki,University
+13,Organization 13,Org13,32978,King 1,Arta,Corporation
+14,Organization 14,Org14,50153,Lexington 7,Athens,University
+15,Organization 15,Org15,44121,Sherman 3,Thessalonicki,Corporation
+16,Organization 16,Org16,65687,Magnolia 6,Arta,University
+17,Organization 17,Org17,99225,Front Street 10,Thessalonicki,Corporation
+18,Organization 18,Org18,23662,King 1,Larisa,Corporation
+19,Organization 19,Org19,90476,King 1,Arta,Corporation
+20,Organization 20,Org20,20690,Redwood 5,Volos,University
+21,Organization 21,Org21,60051,Magnolia 6,Volos,Research_center
+22,Organization 22,Org22,58165,Lexington 7,Arta,Corporation
+23,Organization 23,Org23,55961,Myrtle 9,Volos,Research_center
+24,Organization 24,Org24,49203,Myrtle 9,Arta,Corporation
+25,Organization 25,Org25,19581,Hickory 4,Athens,Corporation
+26,Organization 26,Org26,64891,Lexington 7,Larisa,Research_center
+27,Organization 27,Org27,83335,Laurel 8,Thessalonicki,Corporation
+28,Organization 28,Org28,66142,Redwood 5,Arta,Corporation
+29,Organization 29,Org29,73792,Front Street 10,Athens,Corporation
+30,Organization 30,Org30,83588,Laurel 8,Arta,Corporation

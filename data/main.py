@@ -57,35 +57,35 @@ end_dates = []
 project_dates = []
 for i in range(200):
     a = randint(2017, 2020)
-    b = randint(1, 13)
-    c = randint(1, 29)
-    date = str(a) + '/' + str(b) + '/' + str(c)
-    end_date = str(a + randint(1, 5)) + '/' + str(b) + '/' + str(c)
+    b = randint(1, 12)
+    c = randint(1, 28)
+    date = str(a) + '-' + str(b) + '-' + str(c)
+    end_date = str(a + randint(1, 4)) + '-' + str(b) + '-' + str(c)
     project_dates.append(date)
     end_dates.append(end_date)
 
 birth_dates = []
 for i in range(400):
     a = randint(1970, 1995)
-    b = randint(1, 13)
-    c = randint(1, 29)
-    birth_date = str(a) + '/' + str(b) + '/' + str(c)
+    b = randint(1, 12)
+    c = randint(1, 28)
+    birth_date = str(a) + '-' + str(b) + '-' + str(c)
     birth_dates.append(birth_date)
 
 eval_dates = []
 for i in range(200):
     a = randint(2015, 2017)
-    b = randint(1, 13)
-    c = randint(1, 29)
-    eval_date = str(a) + '/' + str(b) + '/' + str(c)
+    b = randint(1, 12)
+    c = randint(1, 28)
+    eval_date = str(a) + '-' + str(b) + '-' + str(c)
     eval_dates.append(eval_date)
 
 start_work_dates = []
 for i in range(400):
     a = randint(2013, 2015)
-    b = randint(1, 13)
-    c = randint(1, 29)
-    start_work_date = str(a) + '/' + str(b) + '/' + str(c)
+    b = randint(1, 12)
+    c = randint(1, 28)
+    start_work_date = str(a) + '-' + str(b) + '-' + str(c)
     start_work_dates.append(start_work_date)
 
 
@@ -103,7 +103,7 @@ f = open('Executive.csv', 'w', newline='')
 writer = csv.writer(f)
 writer.writerow(['id', 'first_name', 'last_name'])
 for i in range(10):
-    row = [i, first_name[randint(1, 100)], last_name[randint(1, 100)]]
+    row = [i+1, first_name[randint(1, 100)], last_name[randint(1, 100)]]
     writer.writerow(row)
 f.close()
 
@@ -167,9 +167,9 @@ writer_p = csv.writer(p)
 writer_d = csv.writer(d)
 writer_sfb = csv.writer(sfb)
 writer_wp = csv.writer(wp)
-writer_r.writerow(['id', 'first_name', 'last_name', 'birthdate', 'Sex', 'org_id'])
+writer_r.writerow(['id', 'first_name', 'last_name', 'birthdate', 'Sex', 'start_work', 'org_id'])
 writer_e.writerow(['id', ' date ', ' grade', 'rid', 'oid'])
-writer_p.writerow(['id', 'amount', 'title', 'start_date' 'end_date', 'desc', 'exid', 'pid', 'rid', 'eid', 'oid'])
+writer_p.writerow(['id', 'amount', 'title', 'start_date', 'end_date', 'desc', 'eid', 'pid', 'rid', 'evid', 'oid'])
 writer_d.writerow(['id', 'pid', ' title', 'desc', 'delivery_date'])
 writer_sfb.writerow(['pid', 'sf id'])
 writer_wp.writerow(['pid', 'rid'])
@@ -181,20 +181,20 @@ for j in range(30):
     if j != 0:
         for i in range(temp):
             prow = [peid, randint(1000, 100000), title[peid], project_dates[peid], end_dates[peid], description[peid+1],
-                    randint(1, 10), randint(1, 30), rid+i, peid, j+1]
+                    peid, randint(1, 30), rid+i, randint(1, 10), j+1]
             writer_p.writerow(prow)
             erow = [peid, eval_dates[peid], randint(30, 100), randint(1, 10), j+1]
             writer_e.writerow(erow)
             for k in range(randint(1, 3)):
-                writer_sfb.writerow([peid, randint(1, 10)])
+                writer_sfb.writerow([peid, randint(1, 5)])
             peid += 1
             for k in range(randint(0, 5)):
                 drow = [did, peid-1, title[did], description[did], end_dates[peid-1]]
                 writer_d.writerow(drow)
                 did += 1
         for i in range(temp+randint(0, 10)):
-            rrow = [rid, first_name[randint(1, 100)], last_name[randint(1, 100)], start_work_dates[rid],
-                    sex[randint(0, 2)], j+1]
+            rrow = [rid, first_name[randint(1, 100)], last_name[randint(1, 100)], birth_dates[rid],
+                    sex[randint(0, 2)], start_work_dates[rid], j+1]
             if temp == 1:
                 works_on_row = [peid-1, rid]
             if temp > 1:
@@ -206,8 +206,8 @@ for j in range(30):
             rid += 1
     if j == 0:
         for i in range(10):
-            rrow = [rid, first_name[randint(1, 100)], last_name[randint(1, 100)], sex[randint(0, 2)],
-                    start_work_dates[rid], j + 1]
+            rrow = [rid, first_name[randint(1, 100)], last_name[randint(1, 100)], birth_dates[rid],
+                    sex[randint(0, 2)], start_work_dates[rid], j+1]
             writer_r.writerow(rrow)
             rid += 1
 
