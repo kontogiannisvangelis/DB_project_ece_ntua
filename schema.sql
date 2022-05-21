@@ -10,7 +10,7 @@ create table Organizations(
     Post_code int(5) not null,
     Street varchar(20) not null,
     City varchar(20) not null,
-    Org_type varchar(20) not null check (Org_type in ('University', 'Corporation', 'Research_center')),
+    Org_type varchar(20) not null, check (Org_type in ('University', 'Corporation', 'Research_center')),
     primary key (Organization_id)
     #add more constrains
     )ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -67,7 +67,7 @@ create table Evaluation(
     )ENGINE=InnoDB DEFAULT CHARSET=utf8;
     
 create table Organization_phones( 
-	Phone_number int unsigned,
+	Phone_number bigint unsigned,
     Organization_id int unsigned not null,
     primary key(Phone_number),
 	constraint fk_organization_id_phones foreign key (Organization_id) references Organizations(Organization_id) on delete cascade on update cascade 
@@ -99,7 +99,7 @@ create table Scientific_field(
 create table Project(
 	Project_id int unsigned  auto_increment,
 	Amount int default 0, #when we insert amount we have to check if eval greater than 50
-    Title varchar(20) not null,
+    Title varchar(30) not null,
 	Start_Date date default null, 
 	End_Date date  default null,
     Project_description Varchar(400) default null,
@@ -166,7 +166,7 @@ for each row
 begin
 		if new.Org_type = 'University'
 			then insert into University  values(new.Organization_id,null);
-		 else if new.Org_type = 'corporation'
+		 else if new.Org_type = 'Corporation'
 			then insert into corporation values(new.Organization_id,null);
 		 else if new.Org_type = 'Research_center'
 			then insert into Research_center values(new.Organization_id,null,null);
@@ -174,7 +174,7 @@ begin
     end if;
     end if;
     end if;
-    end$$
+    end$$*/
     
 DELIMITER ;
 
@@ -182,7 +182,7 @@ DELIMITER $$
 create trigger duration_check before insert on Project
 for each row
 begin 
-if (select TIMESTAMPDIFF(Year, new.End_Date, new.Start_Date)) not in (1,2,3,4)
+if (select TIMESTAMPDIFF(Year, new.Start_date, new.End_Date)) not in (1,2,3,4)
 then
 signal sqlstate '45000';
 end if;
