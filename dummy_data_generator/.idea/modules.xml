@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/DB_project_ece_ntua.iml" filepath="$PROJECT_DIR$/.idea/DB_project_ece_ntua.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/dummy_data_generator.iml" filepath="$PROJECT_DIR$/.idea/dummy_data_generator.iml" />
     </modules>
   </component>
 </project>
