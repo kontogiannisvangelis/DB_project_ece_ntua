@@ -1,3 +1,5 @@
+
+/*Query 1*/
 select Program_name from Program;
 
 select  p.Title 
@@ -11,6 +13,7 @@ select  p.Title
 																	then we can make "attribute = Udata" a true value so only one condition is taken under consideration.
                                                                     For instance making Udata_first_name = "not null" then, where clause is true for all tuples for all 
                                                                     first_names in Executive */
+/*Query 2 */                                                                    
 create view projects_per_researcher
 	(researcher_fullname, project_title)
     as select concat(r.First_name," ",r.Last_name) , p.Title from 
@@ -22,6 +25,7 @@ create view projects_per_researcher
     
 /*View to be included*/
 
+/*Qyery 3 */
  select p.Title, concat(r.First_name," ",r.Last_name) 
 	from Project p inner join Sf_belongs sfbelon
     on p.Project_id = sfbelon.Project_id
@@ -36,7 +40,7 @@ create view projects_per_researcher
 	where sf.Sf_name = Udata_intresting_field and e.Grade >= 50   /*User data used*/
     and p.Start_date <= curdate() <= p.End_date ;
 
-
+/*Query 4*/
 create view per_year 
 (year_of_project, organization_name, proj_count, pair_of_years)
 as 
@@ -64,7 +68,7 @@ inner join per_two_years t2
 on t1.pair_of_years = t2.pair_of_years 
 where t1.two_year_count = t2.two_year_count and t1.organization_name != t2.organization_name; 
 
-
+/*Query 5 */
 create view field_pairs 
 (first_field,second_field,counter)
 as 
@@ -85,17 +89,73 @@ select concat(sf1.Sf_name," ",sf2.Sf_name)
 	on sf2.Scientific_field_id = p.second_field;
     
     
-    
-select concat(r.First_name," ",r.Last_name) from
+ /*Query 6 */   
+select concat(r.First_name," ",r.Last_name), max_value from
 Researcher r 
 inner join 
-	(select wp.Researcher_id, count(*) as counter from
+	(select wp.Researcher_id, count(*) as counter,max(counter) as max_value from
 		Works_on_project wp
 		group by wp.Researcher_id
 		having wp.Researcher_id in 
 		(select Researcher_id from Researcher where year(curdate()) - year(r.Birthdate) < 40)
 		order by counter DESC)
 on r.Researcher_id = wp.Researcher_id
+where 
+counter = max_value;
+
+/*Query 7 */
+select concat(e.First_name," ",e.Last_name) as fullname, corp_name, total_amount
+from  
+	(select p.Executive_id as Exec, o.Org_name as corp_name, sum(p.Amount) as total_amount
+	from Project p
+	inner join Organizations o
+	on p.Organization_id = o.Organization_id
+	group by p.Executive_id
+	having o.Org_type = 'Corporation'
+	order by total_amount DESC
+	limit 5)
+    inner join Executive e
+    on e.Executive_id = Exec;
+
+/*Query 8 */
+select concat(r.First_name," ",r.Last_name) as full_name, total_projects 
+from
+	(select wp.Researcher_id, count(*) as total_projects
+	from works_on_project wp
+	group by wp.Researcher_id
+	having total_projects >= 5 
+	and wp.Project_id not in (select Project_id from Deliverable))
+    inner join Researcher r 
+    on r.Researcher_id = wp.Researcher_id;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     
 
