@@ -32,7 +32,7 @@ select  p.Title
  Works_on_project wp 
  inner join Researcher r
  on r.Researcher_id = wp.Researcher_id
- where wp.Project_id = (select Title from Project where Title = @Udata_project_title)
+ where wp.Project_id = (select Title from Project where Title = @Udata_project_title);
  
  
  
@@ -50,9 +50,10 @@ create view projects_per_researcher
 /*View to be included*/
 
 /*Qyery 3 */
-set @Udata_intresting_field = '';
+set @Udata_intresting_field = 'Physics';
 
- select p.Title, concat(r.First_name," ",r.Last_name) 
+
+ select p.Title, concat(r.First_name," ",r.Last_name) as full_name
 	from Project p inner join Sf_belongs sfbelon
     on p.Project_id = sfbelon.Project_id
     inner join Scientific_field sf
@@ -64,7 +65,7 @@ set @Udata_intresting_field = '';
     inner join Evaluation e
     on e.Evaluation_id = p.Evaluation_id
 	where sf.Sf_name = @Udata_intresting_field and e.Grade >= 50   /*User data used*/
-    and p.Start_date <= curdate() <= p.End_date ;
+    and p.Start_date <= curdate() and p.End_date >= curdate();
 
 /*Query 4*/
 create view per_year 
@@ -74,8 +75,8 @@ as
 		from Organizations org1 
 		inner join Project p 
 		on p.Organization_id = org1.Organization_id
-		group by year_of_project
-		having proj_count >= 10 ;
+		group by year_of_project, organization_name
+		having proj_count < 10 ;
 
 
 create view per_two_years 
@@ -84,7 +85,7 @@ as
 	(select t1.organization_name as organization_name, abs((t1.proj_count + t2.proj_count)) as two_year_count, t2.pair_of_years as pair_of_years
     from per_year t1 
 	inner join per_year t2
-	on t1.pair_of_years = t2.pair_of_years + 1
+	on t1.pair_of_years = t2.pair_of_years + 2
     where t1.organization_name = t2.organization_name);
         
 
@@ -107,7 +108,7 @@ as
     order by counter DESC
     limit 3);
     
-select concat(sf1.Sf_name," ",sf2.Sf_name) 
+select concat(sf1.Sf_name,", ",sf2.Sf_name) as Combinations
 	from Scientific_field sf1
 	inner join field_pairs p
 	on sf1.Scientific_field_id = p.first_field
