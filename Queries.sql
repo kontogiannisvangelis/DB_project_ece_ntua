@@ -2,17 +2,41 @@
 /*Query 1*/
 select Program_name from Program;
 
+set @Udata_end_date = null;
+set @Udata_start_date = null;
+set @Udata_First_name = null;
+set @Udata_Last_name = null;
+set @Udata_duration_years = 4;
+
 select  p.Title 
 	from Project p 
-	where p.Start_date = Udata_start_date and p.End_date = Udata_end_date 
-    and timestampdiff(month,p.Start_date,p.End_date) = Udata_duration_months      /*User data used*/
-    and Executive_id = (select e.Executive_id 
-							from Executive e
-							where e.First_name = Udata_first_name 
-                            and e.Last_name = Udata_last_name);  /*I have 3 "and" but maybe user gives only 1 condition in where clause ,
+	where 
+    (case 
+		when @Udata_end_date is not null then p.Start_date = @Udata_start_date 
+		when @Udata_start_date is not null then p.End_date = @Udata_end_date 
+		when @Udata_duration_years is not null then timestampdiff(year,p.Start_date,p.End_date) = @Udata_duration_years
+		when @Udata_Last_name is not null then p.Executive_id = (select e.Executive_id 
+								from Executive e
+								where e.Last_name = @Udata_Last_name)
+		when @Udata_First_name is not null then  p.Executive_id = (select e.Executive_id 
+								from Executive e
+								where e.First_name = @Udata_First_name)
+	    else p.Title = p.Title 
+	end); /*I have 3 "and" but maybe user gives only 1 condition in where clause ,
 																	then we can make "attribute = Udata" a true value so only one condition is taken under consideration.
                                                                     For instance making Udata_first_name = "not null" then, where clause is true for all tuples for all 
-                                                                    first_names in Executive */
+															       first_names in Executive */
+                                                                   
+ set @Udata_project_title = 'Random title 1';
+ select concat(r.First_name," ",r.Last_name) as fullname from
+ Works_on_project wp 
+ inner join Researcher r
+ on r.Researcher_id = wp.Researcher_id
+ where wp.Project_id = (select Title from Project where Title = @Udata_project_title)
+ 
+ 
+ 
+ 
 /*Query 2 */                                                                    
 create view projects_per_researcher
 	(researcher_fullname, project_title)
@@ -21,11 +45,13 @@ create view projects_per_researcher
     on wp.Project_id = p.Project_id 
     inner join Researcher r 
     on r.Researcher_id = wp.Researcher_id
-    order by r.Researcher_id ASC;
+    order by r.First_name, r.Last_name ASC;
     
 /*View to be included*/
 
 /*Qyery 3 */
+set @Udata_intresting_field = '';
+
  select p.Title, concat(r.First_name," ",r.Last_name) 
 	from Project p inner join Sf_belongs sfbelon
     on p.Project_id = sfbelon.Project_id
@@ -36,8 +62,8 @@ create view projects_per_researcher
     inner join Researcher r
     on r.Researcher_id = wp.Researcher_id
     inner join Evaluation e
-    on e.Evaluation_id = r.Evaluation_id
-	where sf.Sf_name = Udata_intresting_field and e.Grade >= 50   /*User data used*/
+    on e.Evaluation_id = p.Evaluation_id
+	where sf.Sf_name = @Udata_intresting_field and e.Grade >= 50   /*User data used*/
     and p.Start_date <= curdate() <= p.End_date ;
 
 /*Query 4*/
