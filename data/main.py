@@ -177,7 +177,9 @@ rid = 1
 peid = 1
 did = 1
 for j in range(30):
-    temp = (randint(0, 5))
+    temp = (randint(0, 2))
+    if (j+1) % 10 == 0:
+        temp = 20
     if j != 0:
         for i in range(temp):
             prow = [peid, randint(1000, 100000), title[peid], project_dates[peid], end_dates[peid], description[peid+1],
@@ -192,17 +194,18 @@ for j in range(30):
                 drow = [did, peid-1, title[did], description[did], end_dates[peid-1]]
                 writer_d.writerow(drow)
                 did += 1
-        for i in range(temp+randint(0, 10)):
+        for i in range(temp+randint(0, 20)):
             rrow = [rid, first_name[randint(1, 100)], last_name[randint(1, 100)], birth_dates[rid],
                     sex[randint(0, 2)], start_work_dates[rid], j+1]
-            if temp == 1:
-                works_on_row = [peid-1, rid]
-            if temp > 1:
-                works_on_row = [peid - randint(1, temp), rid]
-            if temp == 0:
-                works_on_row = [peid, rid]
             writer_r.writerow(rrow)
-            writer_wp.writerow(works_on_row)
+            for k in range(temp):
+                works_on_row = [peid-1-k, rid]
+                if k==i:
+                    writer_wp.writerow(works_on_row)
+                else:
+                    if randint(0,1) == 1:
+                        writer_wp.writerow(works_on_row)
+
             rid += 1
     if j == 0:
         for i in range(10):
@@ -210,6 +213,3 @@ for j in range(30):
                     sex[randint(0, 2)], start_work_dates[rid], j+1]
             writer_r.writerow(rrow)
             rid += 1
-
-
-
