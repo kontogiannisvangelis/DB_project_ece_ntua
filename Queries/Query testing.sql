@@ -1,3 +1,4 @@
+drop view per_year;
 create view per_year 
 (year_of_project, organization_name, proj_count, pair_of_years)
 as 
