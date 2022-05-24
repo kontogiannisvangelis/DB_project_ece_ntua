@@ -1,0 +1,2 @@
+to be able to start virtual env:
+    set-ExecutionPolicy RemoteSigned -Scope CurrentUser
