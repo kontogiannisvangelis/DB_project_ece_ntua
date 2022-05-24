@@ -107,43 +107,46 @@ select concat(sf1.Sf_name,", ",sf2.Sf_name) as Combinations
     
     
  /*Query 6 */   
-select concat(r.First_name," ",r.Last_name), max_value from
-Researcher r 
-inner join 
-	(select wp.Researcher_id, count(*) as counter,max(counter) as max_value from
-		Works_on_project wp
-		group by wp.Researcher_id
-		having wp.Researcher_id in 
-		(select Researcher_id from Researcher where year(curdate()) - year(r.Birthdate) < 40)
-		order by counter DESC)
-on r.Researcher_id = wp.Researcher_id
-where 
-counter = max_value;
+create view young_researchers (rid,counter) as
+	(select wp.Researcher_id as rid, count(*) as counter from
+			Works_on_project wp
+			group by wp.Researcher_id
+			having wp.Researcher_id in 
+			(select Researcher_id from Researcher r where year(curdate()) - year(r.Birthdate) <= 40)
+			order by counter DESC);
+            
+select concat(r.First_name," ",r.Last_name) as fullname, re.counter
+from 
+	young_researchers re
+    inner join Researcher r
+    on r.Researcher_id = re.rid
+where re.counter = (select counter from young_researchers limit 1);
 
 /*Query 7 */
 select concat(e.First_name," ",e.Last_name) as fullname, corp_name, total_amount
 from  
-	(select p.Executive_id as Exec, o.Org_name as corp_name, sum(p.Amount) as total_amount
+	(select p.Executive_id as Exec, o.Org_name as corp_name, sum(p.Amount) as total_amount,o.Org_type
 	from Project p
 	inner join Organizations o
 	on p.Organization_id = o.Organization_id
-	group by p.Executive_id
+	group by p.Executive_id, o.Organization_id
 	having o.Org_type = 'Corporation'
 	order by total_amount DESC
-	limit 5)
+	limit 5) der
     inner join Executive e
     on e.Executive_id = Exec;
+  
 
 /*Query 8 */
 select concat(r.First_name," ",r.Last_name) as full_name, total_projects 
 from
-	(select wp.Researcher_id, count(*) as total_projects
+	(select wp.Researcher_id as rid, count(*) as total_projects
 	from works_on_project wp
+    where wp.Project_id not in (select Project_id from Deliverable)
 	group by wp.Researcher_id
-	having total_projects >= 5 
-	and wp.Project_id not in (select Project_id from Deliverable))
+	having total_projects >= 5) der 
     inner join Researcher r 
-    on r.Researcher_id = wp.Researcher_id;
+    on r.Researcher_id = rid;
 
 
 
