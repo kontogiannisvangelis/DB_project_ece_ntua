@@ -26,4 +26,19 @@
     <div class="table-title">
         Young Researchers that work on the most projects:
     </div>
+</div>
+<div class="table-sec">
+    <table border=1>
+        <tr>
+            Researcher 
+        </tr>
+        {% for t in tuples %}
+        <tr>
+            <td>{{t[0]}}</td>
+            <!--Add columns if needed-->
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+</div>
 </body>

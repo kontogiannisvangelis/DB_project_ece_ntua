@@ -26,4 +26,17 @@
     <div class="table-title">
         Researchers tha work on 5 or more projects that do not have deliverables:
     </div>
+    <div class="table-sec">
+        <table border=1>
+            <tr>
+                Researcher
+            </tr>
+            {% for t in tuples %}
+            <tr>
+                <td>{{t[0]}}</td>
+                <!--Add columns if needed-->
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 </body>

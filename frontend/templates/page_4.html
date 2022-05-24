@@ -27,4 +27,17 @@
         Organizations that have recieved the same number of projects over two consecutive years, with
         at least 10 projects per year:
     </div>
+    <div class="table-sec">
+        <table border=1>
+            <tr>
+                Organization
+            </tr>
+            {% for t in tuples %}
+            <tr>
+                <td>{{t[0]}}</td>
+                <!--Add columns if needed-->
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 </body>

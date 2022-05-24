@@ -26,4 +26,17 @@
     <div class="table-title">
         Top 5 H.F.R.I executives financing corporations:
     </div>
+    <div class="table-sec">
+        <table border=1>
+            <tr>
+                Executive
+            </tr>
+            {% for t in tuples %}
+            <tr>
+                <td>{{t[0]}}</td>
+                <!--Add columns if needed-->
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 </body>

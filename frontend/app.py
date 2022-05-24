@@ -106,42 +106,73 @@ def page_2():
     return render_template('page_2.html')
 
 @app.route('/page_3.html', methods=['GET', 'POST'] )
-def page_3():
+def page_3():                                                                #uncommend lines below
     cur = mysql.connection.cursor()
     sf_field_res = cur.execute("select sf_name from Scientific_field")
     sf = cur.fetchall()
     if request.method == 'POST':
         #field = request.form
         #cur = mysql.connection.cursor()
-        #sf_field_res = cur.execute()   put the query when stupid backend team has made it 
-        #tup = cur.fetchall()
-        return render_template('page_3.html', sf=sf, related=sf)  #change to tup
+        #sf_field_res = cur.execute("")                                      #add query
+        #tup = cur.fetchall()  
+        return render_template('page_3.html', sf=sf, related=sf)             #change to sf to tup
     return render_template('page_3.html', sf=sf, related=[])
 
 @app.route('/page_4.html')
-def page_4():
-    return render_template('page_4.html')
+def page_4():                                                                #uncommend lines below
+    #cur = mysql.connection.cursor()
+    #res = cur.execute("")                                                   #add query
+    #tuples = cur.fetchall() 
+    return render_template('page_4.html', tuples=[])                         #change [] to tuples
 
 @app.route('/page_5.html')
-def page_5():
-    return render_template('page_5.html')
+def page_5():                                                                #uncommend lines below
+    #cur = mysql.connection.cursor()
+    #res = cur.execute("")                                                   #add query
+    #tuples = cur.fetchall() 
+    return render_template('page_5.html', tuples=[])                         #change [] to tuples
+
 
 @app.route('/page_6.html')
-def page_6():
-    return render_template('page_6.html')
+def page_6():                                                                #uncommend lines below
+    #cur = mysql.connection.cursor()
+    #res = cur.execute("")                                                   #add query
+    #tuples = cur.fetchall() 
+    return render_template('page_6.html', tuples=[])                         #change [] to tuples
 
-@app.route('/page_7.html')
-def page_7():
-    return render_template('page_7.html')
+@app.route('/page_7.html')  
+def page_7():                                                                #uncommend lines below
+    #cur = mysql.connection.cursor()
+    #res = cur.execute("")                                                   #add query
+    #tuples = cur.fetchall() 
+    return render_template('page_7.html', tuples=[])                         #change [] to tuples
 
 @app.route('/page_8.html')
-def page_8():
-    return render_template('page_8.html')
+def page_8():                                                                #uncommend lines below
+    #cur = mysql.connection.cursor()
+    #res = cur.execute("")                                                   #add query
+    #tuples = cur.fetchall() 
+    return render_template('page_8.html', tuples=[])                         #change [] to tuples
 
 @app.route('/page_9.html')
 def page_9():
     return render_template('page_9.html')
 
+@app.route('/page_9_ins.html')
+def page_9_ins():
+    return render_template('page_9_ins.html')
+
+@app.route('/page_9_up.html')
+def page_9_up():
+    return render_template('page_9_up.html')
+
+@app.route('/page_9_del.html')
+def page_9_del():
+    return render_template('page_9_del.html')
+
+@app.route('/page_9_ins_1.html')
+def page_9_ins_1():
+    return render_template('page_9_ins_1.html')
 
 
 if __name__ == '__main__':
