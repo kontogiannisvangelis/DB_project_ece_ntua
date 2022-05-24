@@ -27,12 +27,12 @@ select  p.Title
                                                                     For instance making Udata_first_name = "not null" then, where clause is true for all tuples for all 
 															       first_names in Executive */
                                                                    
- set @Udata_project_title = 'Random title 1';
+set @Udata_project_title = 'Random title 1';
  select concat(r.First_name," ",r.Last_name) as fullname from
  Works_on_project wp 
  inner join Researcher r
  on r.Researcher_id = wp.Researcher_id
- where wp.Project_id = (select Title from Project where Title = @Udata_project_title);
+ where wp.Project_id = (select Project_id from Project where Title = @Udata_project_title);
  
  
  
@@ -64,36 +64,26 @@ set @Udata_intresting_field = 'Physics';
     on r.Researcher_id = wp.Researcher_id
     inner join Evaluation e
     on e.Evaluation_id = p.Evaluation_id
-	where sf.Sf_name = @Udata_intresting_field and e.Grade >= 50   /*User data used*/
-    and p.Start_date <= curdate() and p.End_date >= curdate();
+	where sf.Sf_name = @Udata_intresting_field and e.Grade >= 50   /**/
+    and p.Start_date <= curdate() and (timestampdiff(year,curdate(),p.End_date));
 
 /*Query 4*/
 create view per_year 
-(year_of_project, organization_name, proj_count, pair_of_years)
+(year_of_project, organization_name, proj_count)
 as 
-	select year(p.Start_date) as year_of_project ,org1.Org_name as organization_name, count(*) as proj_count, (year(p.Start_date) + year(p.Start_date)+1) as pair_of_years
+	select year(p.Start_date) as year_of_project ,org1.Org_name as organization_name, count(*) as proj_count
 		from Organizations org1 
 		inner join Project p 
 		on p.Organization_id = org1.Organization_id
 		group by year_of_project, organization_name
-		having proj_count < 10 ;
-
-
-create view per_two_years 
-(organization_name,two_year_count,pair_of_years) 
-as
-	(select t1.organization_name as organization_name, abs((t1.proj_count + t2.proj_count)) as two_year_count, t2.pair_of_years as pair_of_years
-    from per_year t1 
-	inner join per_year t2
-	on t1.pair_of_years = t2.pair_of_years + 2
-    where t1.organization_name = t2.organization_name);
+		having proj_count >= 10 ;
         
-
-select t1.organization_name, t2.organization_name
-from per_two_years t1 
-inner join per_two_years t2
-on t1.pair_of_years = t2.pair_of_years 
-where t1.two_year_count = t2.two_year_count and t1.organization_name != t2.organization_name; 
+select p1.organization_name
+from per_year p1
+inner join per_year p2 
+on p1.year_of_project = p2.year_of_project + 1
+where p1.organization_name = p2.organization_name 
+and p1.proj_count = p2.proj_count;
 
 /*Query 5 */
 create view field_pairs 
