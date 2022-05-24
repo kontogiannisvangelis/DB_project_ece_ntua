@@ -188,8 +188,12 @@ signal sqlstate '45000';
 end if;
 end$$
 
+create trigger Lead_Researcher after insert on Project
+ for each row
+ begin
+ insert into Works_on_project values(new.Project_id , new.Researcher_id);
+ end
  
-
  
  
 
