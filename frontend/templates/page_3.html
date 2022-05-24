@@ -26,7 +26,18 @@
     <div class="table-title">
         Scientific fields:
     </div>
-    <!--PRINT TABLE WITH AVAILABLE SCIENTIFIC FIELDS-->
+    <div class="table-sec">
+        <table border=1>
+            <tr>
+                Scientific fields
+            </tr>
+            {% for s in sf %}
+            <tr>
+                <td>{{s[0]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
     <div class="table-title">
         Pick a Scientific field:
     </div>
@@ -40,5 +51,16 @@
     <div class="table-title">
         Related projects and researchers (last year):
     </div>
-    <!--print the two tables -->
+    <div class="table-sec">
+        <table border=1>
+            <tr>
+                Related projects and researchers (last year)
+            </tr>
+            {% for s in related %}
+            <tr>
+                <td>{{s[0]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 </body>

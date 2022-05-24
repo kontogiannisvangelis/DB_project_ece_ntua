@@ -23,36 +23,40 @@
         <a href="page_8.html">Researchers</a>
         <a href="page_9.html">Edit Data</a>
     </div>
-    <div class="table-title">Αvailable programs:</div>
+    <div class="table-title">Αvailable projects:</div>
     <div class="table-sec">
         <table border=1>
             <tr>
-                Program names
+                Project
             </tr>
-            {% for name in program_names %}
+            {% for project in project_titles %}
+            <tr>
+                <td>{{project[0]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="table-title">Choose a project:</div>
+    <div class="search_form" action="">
+        <form  method="post" >
+            <label for="project">Project:</label>
+            <input type="text" id="project" name="project"><br><br>
+            <input type="submit" value="Submit">
+          </form>
+    </div>
+    <div class="table-title">Researchers working on project you chose:</div>
+    <div class="table-sec">
+        <table border=1>
+            <tr>
+                Researcher name
+            </tr>
+            {% for name in researcher_names%}
             <tr>
                 <td>{{name[0]}}</td>
             </tr>
             {% endfor %}
         </table>
-    </div>
-    
-    <div class="table-title">Select from Projects:</div>    
-    <div class="search_form" action="">
-        <form  method="post" >
-            <label for="start_date">Start Date:</label>
-            <input type="date" id="start_date" name="start_date"><br><br>
-            <label for="end_date">End Date:</label>
-            <input type="date" id="end_date" name="end_date"><br><br>
-            <label for="duration">Duration:</label>
-            <input type="text" id="duration" name="duration"><br><br>
-            <label for="ex_f_name">Executive's first name:</label>
-            <input type="text" id="ex_f_name" name="ex_f_name"><br><br>
-            <label for="ex_l_name">Executive's last name:</label>
-            <input type="text" id="ex_l_name" name="ex_l_name"><br><br>
-            <input type="submit" value="Submit">
-          </form>
-    </div>
+    </div> 
     
 </body>
 </html>

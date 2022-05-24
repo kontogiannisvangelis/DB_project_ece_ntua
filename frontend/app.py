@@ -17,13 +17,18 @@ mysql = MySQL(app)
 
 
 
-
+buffer = []
+buffer_2 = []
 @app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('index.html')
 
 @app.route('/page_1.html', methods=['GET', 'POST'])
 def page_1():
+    cur = mysql.connection.cursor()
+    program_names_res = cur.execute("select Program_name from Program")
+    program_names = cur.fetchall()
+    
     if request.method == 'POST':
         input_data = request.form
         start_date = input_data['start_date']
@@ -40,12 +45,53 @@ def page_1():
             ex_f_name = None
         ex_l_name = input_data['ex_l_name']
         if ex_l_name == '':
-            ex_l_name = None
+            ex_l_name = None  
         cur = mysql.connection.cursor()
-        cur.execute("insert into test(start_date, end_date, duration, ex_f_name, ex_l_name) values(%s, %s, %s, %s, %s)", (start_date, end_date, duration, ex_f_name, ex_l_name)) 
-        mysql.connection.commit()
-        cur.close()
-    return render_template('page_1.html')
+        project_res = cur.execute(
+            """
+            select  p.Title 
+            from Project p 
+            where 
+            (case 
+                when %(x)s is not null then p.Start_date = %(x)s
+                when %(y)s is not null then p.End_date = %(y)s
+                when %(z)s is not null then timestampdiff(year,p.Start_date,p.End_date) = %(z)s
+                when %(e)s is not null then p.Executive_id = (select e.Executive_id 
+                                        from Executive e
+                                        where e.Last_name = %(e)s)
+                when %(w)s is not null then  p.Executive_id = (select e.Executive_id 
+                                        from Executive e
+                                        where e.First_name = %(w)s)
+                else p.Title = p.Title 
+            end)            
+            """,{'x': start_date,'y': end_date,'z': duration,'w': ex_f_name,'e': ex_l_name})
+        project_titles = cur.fetchall()
+        global buffer 
+        buffer = project_titles
+        return redirect('/page_1_1.html')    
+    return render_template('/page_1.html', program_names=program_names)
+
+@app.route('/page_1_1.html', methods=['GET', 'POST'])
+def page_1_1():
+    global buffer
+    if request.method == 'POST':
+        project_tuple = request.form
+        project = project_tuple['project']
+        cur = mysql.connection.cursor()
+        project_res = cur.execute(
+            """
+             select concat(r.First_name," ",r.Last_name) as fullname from
+            Works_on_project wp 
+            inner join Researcher r
+            on r.Researcher_id = wp.Researcher_id
+            where wp.Project_id = (select Project_id from Project where Title = %(x)s)
+            """,{'x': project})
+        researcher_names = cur.fetchall()
+        return render_template('/page_1_1.html', project_titles=buffer, researcher_names=researcher_names)
+    
+    return render_template('/page_1_1.html', project_titles=buffer, researcher_names=[])
+
+
 
 @app.route('/page_2_1.html')
 def page_2_1():
@@ -59,9 +105,18 @@ def page_2_2():
 def page_2():
     return render_template('page_2.html')
 
-@app.route('/page_3.html')
+@app.route('/page_3.html', methods=['GET', 'POST'] )
 def page_3():
-    return render_template('page_3.html')
+    cur = mysql.connection.cursor()
+    sf_field_res = cur.execute("select sf_name from Scientific_field")
+    sf = cur.fetchall()
+    if request.method == 'POST':
+        #field = request.form
+        #cur = mysql.connection.cursor()
+        #sf_field_res = cur.execute()   put the query when stupid backend team has made it 
+        #tup = cur.fetchall()
+        return render_template('page_3.html', sf=sf, related=sf)  #change to tup
+    return render_template('page_3.html', sf=sf, related=[])
 
 @app.route('/page_4.html')
 def page_4():
