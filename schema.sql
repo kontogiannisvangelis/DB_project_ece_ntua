@@ -144,6 +144,48 @@ create table Deliverable(
     constraint fk_project_id_deliverable foreign key(Project_id) references Project(Project_id) on delete cascade on update cascade
     )ENGINE=InnoDB DEFAULT CHARSET=utf8;
     
+    
+create view projects_per_researcher
+	(researcher_fullname, project_title)
+    as select concat(r.First_name," ",r.Last_name) , p.Title from 
+    Works_on_project wp inner join Project p 
+    on wp.Project_id = p.Project_id 
+    inner join Researcher r 
+    on r.Researcher_id = wp.Researcher_id
+    order by r.First_name, r.Last_name ASC;
+    
+create view per_year 
+(year_of_project, organization_name, proj_count)
+as 
+	select year(p.Start_date) as year_of_project ,org1.Org_name as organization_name, count(*) as proj_count
+		from Organizations org1 
+		inner join Project p 
+		on p.Organization_id = org1.Organization_id
+		group by year_of_project, organization_name
+		having proj_count >= 10 ;
+        
+create view field_pairs 
+(first_field,second_field,counter)
+as 
+	(select sf1.Scientific_field_id as first_field, sf2.Scientific_field_id as second_field, count(*) as counter
+	from Sf_belongs sf1
+    inner join Sf_belongs sf2
+    on sf2.Project_id = sf1.Project_id
+	group by sf1.Scientific_field_id, sf2.Scientific_field_id
+    having sf1.Scientific_field_id > sf2.Scientific_field_id
+    order by counter DESC
+    limit 3);
+    
+create view young_researchers (rid,counter) as
+	(select wp.Researcher_id as rid, count(*) as counter from
+			Works_on_project wp
+			group by wp.Researcher_id
+			having wp.Researcher_id in 
+			(select Researcher_id from Researcher r where year(curdate()) - year(r.Birthdate) <= 40)
+			order by counter DESC);
+            
+            
+    
 DELIMITER $$
 create trigger evaluator_check before insert on Evaluation
 for each row
