@@ -28,13 +28,12 @@
     </div>
     <div class="table-sec">
         <table border=1>
-            <tr>
-                Researcher
-            </tr>
+            <th>Researcher</th>
+            <th>Number of projects</th>
             {% for t in tuples %}
             <tr>
                 <td>{{t[0]}}</td>
-                <!--Add columns if needed-->
+                <td>{{t[1]}}</td>
             </tr>
             {% endfor %}
         </table>

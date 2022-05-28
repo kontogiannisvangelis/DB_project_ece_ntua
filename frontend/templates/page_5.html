@@ -26,16 +26,19 @@
     <div class="table-title">
         Most popular Scientific field combinations:
     </div>
-    <table border=1>
-        <tr>
-            <!--Add column title-->
-        </tr>
-        {% for t in tuples %}
-        <tr>
-            <td>{{t[0]}}</td>
-            <!--Add columns if needed-->
-        </tr>
-        {% endfor %}
-    </table>
+    <div class="table-sec">
+        <table border=1>
+            <tr>
+                <!--Add column title-->
+            </tr>
+            {% for t in tuples %}
+            <tr>
+                <td>{{t[0]}}</td>
+                <!--Add columns if needed-->
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    
 </div>
 </body>

@@ -26,9 +26,7 @@
     <div class="table-title">Αvailable projects:</div>
     <div class="table-sec">
         <table border=1>
-            <tr>
-                Project
-            </tr>
+           <th>Project</th>
             {% for project in project_titles %}
             <tr>
                 <td>{{project[0]}}</td>
@@ -47,9 +45,7 @@
     <div class="table-title">Researchers working on project you chose:</div>
     <div class="table-sec">
         <table border=1>
-            <tr>
-                Researcher name
-            </tr>
+            <th>Researcher name</th>
             {% for name in researcher_names%}
             <tr>
                 <td>{{name[0]}}</td>

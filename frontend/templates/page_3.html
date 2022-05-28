@@ -28,9 +28,7 @@
     </div>
     <div class="table-sec">
         <table border=1>
-            <tr>
-                Scientific fields
-            </tr>
+            <th>Scientific fields</th>
             {% for s in sf %}
             <tr>
                 <td>{{s[0]}}</td>
@@ -53,12 +51,12 @@
     </div>
     <div class="table-sec">
         <table border=1>
-            <tr>
-                Related projects and researchers (last year)
-            </tr>
+            <th>Project</th>
+            <th>Researcher</th>
             {% for s in related %}
             <tr>
                 <td>{{s[0]}}</td>
+                <td>{{s[1]}}</td>
             </tr>
             {% endfor %}
         </table>

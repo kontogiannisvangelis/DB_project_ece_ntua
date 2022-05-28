@@ -156,3 +156,43 @@ td, th {
   padding: 1.4em;
 }
 
+.radio{
+  padding: 1.6em;
+}
+
+.radio-but{
+  font-size: 2em;
+}
+
+input[type=radio] {
+  border: 0px;
+  width: 5%;
+  height: 2em;
+}
+
+.form-submit-button {
+  margin-left: 1.2em;
+  font-size: 1.5em;
+  background: orange;
+  color: white;
+  border: 1px solid #eee;
+  border-radius: 30px;
+  box-shadow: 5px 5px 5px rgb(252, 0, 0);
+  text-shadow: none;
+  }
+  
+  .form-submit-button:hover {
+  background: red;
+  color: #fff;
+  border: 1px solid #eee;
+  border-radius: 20px;
+  box-shadow: 5px 5px 5px #eee;
+  text-shadow: none;
+  }
+
+  .remove-dec{
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+  }
+
