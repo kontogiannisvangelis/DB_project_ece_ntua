@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>H.F.R.I</title>
+    <link type="text/css" rel="stylesheet" href="/static/main.css"> 
+</head>
+<body>
+    <div class="logo">
+        <img src="/static/HFRI_LOGO_SMALL.png" alt="Logo photo">
+    </div>
+    <div class="topnav">
+        <a href="{{url_for('index')}}">Home</a>
+        <a href="page_1.html">Search per condition</a>
+        <a href="page_2.html">Views</a>
+        <a href="page_3.html">Scientific Fields</a>
+        <a href="page_4.html">Organizations</a>
+        <a href="page_5.html">Interdisciplinary Research Programmes</a>
+        <a href="page_6.html">Young Researchers</a>
+        <a href="page_7.html">Top 5 Executives</a>
+        <a href="page_8.html">Researchers</a>
+        <a class="active" href="page_9.html">Edit Data</a>
+    </div>
+    <div class="pick_table">
+        1. Insert
+    </div>
+    <div class="search_form" action="">
+        <form  method="post" >
+            <label for="project">Title:</label>
+            <input type="text" id="title" name="title"><br><br>
+            <label for="project">Amount:</label>
+            <input type="text" id="amount" name="amount"><br><br>
+            <label for="project">Start date:</label>
+            <input type="date" id="start_date" name="start_date"><br><br>
+            <label for="project">End date:</label>
+            <input type="date" id="end_date" name="end_date"><br><br>
+            <label for="project">Project description:</label>
+            <input type="text" id="pr_desc" name="pr_desc"><br><br>
+            <label for="project">Evaluation date:</label>
+            <input type="text" id="eval_date" name="eval_date"><br><br>
+            <label for="project">Evaluation grade:</label>
+            <input type="text" id="eval_grade" name="eval_grade"><br><br>
+            <label for="project">Evaluator's first name:</label>
+            <input type="text" id="eval_f_name" name="eval_f_name"><br><br>
+            <label for="project">Evaluator's last name:</label>
+            <input type="text" id="eval_l_name" name="eval_l_name"><br><br>
+            <label for="project">Evaluator's birthdate:</label>
+            <input type="text" id="eval_bday" name="eval_bday"><br><br>
+            <label for="project"> Organization name:</label>
+            <input type="text" id="org_name" name="org_name"><br><br>
+            <label for="project">Program name:</label>
+            <input type="text" id="pr_name" name="pr_name"><br><br>
+            <label for="project">Leading researcher's first name:</label>
+            <input type="text" id="l_r_f_n" name="l_r_f_n"><br><br>
+            <label for="project">Leading researcher's last name:</label>
+            <input type="text" id="l_r_l_n" name="l_r_l_n"><br><br>
+            <label for="project">Leading researcher's birthdate:</label>
+            <input type="text" id="l_r_bd" name="l_r_bd"><br><br>
+            <label for="project">Executive's first name:</label>
+            <input type="text" id="ex_f_name" name="ex_f_name"><br><br>
+            <label for="project">Executive's last name:</label>
+            <input type="text" id="ex_l_name" name="ex_l_name"><br><br>
+            <input type="submit" value="Submit" name="insert">
+        </form>
+    </div>
+    <div class="pick_table">
+        2. Update:
+    </div>
+    <div class="search_form" action="">
+        <form  method="post" >
+            <label for="project">Old project:</label>
+            <input type="text" id="old_pr" name="old_pr"><br><br>
+            <label for="project">Title:</label>
+            <input type="text" id="title" name="title"><br><br>
+            <label for="project">Amount:</label>
+            <input type="text" id="amount" name="amount"><br><br>
+            <label for="project">Start date:</label>
+            <input type="date" id="start_date" name="start_date"><br><br>
+            <label for="project">End date:</label>
+            <input type="date" id="end_date" name="end_date"><br><br>
+            <label for="project">Project description:</label>
+            <input type="text" id="pr_desc" name="pr_desc"><br><br>
+            <label for="project">Evaluation date:</label>
+            <input type="text" id="eval_date" name="eval_date"><br><br>
+            <label for="project">Evaluation grade:</label>
+            <input type="text" id="eval_grade" name="eval_grade"><br><br>
+            <label for="project">Evaluator's first name:</label>
+            <input type="text" id="eval_f_name" name="eval_f_name"><br><br>
+            <label for="project">Evaluator's last name:</label>
+            <input type="text" id="eval_l_name" name="eval_l_name"><br><br>
+            <label for="project">Evaluator's birthdate:</label>
+            <input type="text" id="eval_bday" name="eval_bday"><br><br>
+            <label for="project"> Organization name:</label>
+            <input type="text" id="org_name" name="org_name"><br><br>
+            <label for="project">Program name:</label>
+            <input type="text" id="pr_name" name="pr_name"><br><br>
+            <label for="project">Leading researcher's first name:</label>
+            <input type="text" id="l_r_f_n" name="l_r_f_n"><br><br>
+            <label for="project">Leading researcher's last name:</label>
+            <input type="text" id="l_r_l_n" name="l_r_l_n"><br><br>
+            <label for="project">Leading researcher's birthdate:</label>
+            <input type="text" id="l_r_bd" name="l_r_bd"><br><br>
+            <label for="project">Executive's first name:</label>
+            <input type="text" id="ex_f_name" name="ex_f_name"><br><br>
+            <label for="project">Executive's last name:</label>
+            <input type="text" id="ex_l_name" name="ex_l_name"><br><br>
+            <input type="submit" value="Submit" name="update">
+        </form>
+        
+    </div>
+    <div class="pick_table">
+        3. Delete:
+    </div>
+    <div class="search_form" action="">
+        <form  method="post" >
+            <label for="project">Project Title:</label>
+            <input type="text" id="pr_title" name="pr_title"><br><br>
+            <input type="submit" value="Submit" name="delete">
+        </form>
+    </div>

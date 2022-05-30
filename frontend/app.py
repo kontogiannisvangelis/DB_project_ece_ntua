@@ -234,17 +234,19 @@ def page_9():
         if table == 3:
             return redirect('/program.html')
         if table == 4:
-            pass
+            return redirect('/organization.html')
         if table == 5:
             return redirect('/researcher.html')
         if table == 6:
-            pass
+            return redirect('/project.html')
         if table == 7:
-            pass
+             return redirect('/evaluation.html')
         if table == 8:
-            pass
-        if table == 7:
-            pass
+            return redirect('/deliverable.html')
+        if table == 9:
+            return redirect('/works_on_project.html')
+        if table == 10:
+            return redirect('phones.html')
     return render_template('page_9.html')
 
 @app.route('/sf.html', methods=['GET', 'POST']) #checked 
@@ -254,17 +256,29 @@ def sf():
         delete = request.form.get("delete")
         update = request.form.get("update")
         if insert is not None:
-            sf = request.form['sf']
-            #add here queries
+            d = request.form
+            sf = d['sf']
+            cur = mysql.connection.cursor()
+            res = cur.execute("""insert into Scientific_field(Scientific_field_id, Sf_name) values(NULL, %(x)s)""", {'x': sf})
+            mysql.connection.commit()
+            cur.close()
             return render_template('sf.html')
         if update is not None:
-            new_sf = request.form['new_sf']
-            old_sf = request.form['old_sf']
-            #add here queries
+            d = request.form
+            new_sf = d['new_sf']
+            old_sf = d['old_sf']
+            cur = mysql.connection.cursor()
+            res = cur.execute("""Update Scientific_field set Sf_name = %(y)s where  Sf_name = %(x)s""", {'x': old_sf,'y': new_sf})
+            mysql.connection.commit()
+            cur.close()
             return render_template('sf.html')
         if delete is not None:
-            sf = request.form['sf']
-            #add here queries
+            d = request.form
+            sf = d['sf']
+            cur = mysql.connection.cursor()
+            res = cur.execute("""Delete from Scientific_field where Sf_name = %(y)s""", {'y': sf})
+            mysql.connection.commit()
+            cur.close()
             return render_template('sf.html')
     return render_template('sf.html')
     
@@ -277,27 +291,27 @@ def program():
         update = request.form.get("update")
         if insert is not None:
             print("insert:")
-            pr_name = request.form['pr_name']
-            pr_sec = request.form['pr_sec']
+            d = request.form
+            sf = d['sf']
+            cur = mysql.connection.cursor()
+            res = cur.execute("""insert into Scientific_field(Scientific_field_id, Sf_name) values(NULL, %(x)s)""", {'x': sf})
+            mysql.connection.commit()
+            cur.close()
             #add here queries
             return render_template('program.html')
         if update is not None:
             print("update:")
-            new_pr_name = request.form['new_pr_name']
-            new_pr_sec = request.form['new_pr_name']
-            old_pr_name = request.form['old_pr_name']
-            old_pr_sec = request.form['old_pr_sec']
+            d = request.form
             #add here queries
             return render_template('program.html')
         if delete is not None:
             print("delete:")
-            pr_name = request.form['pr_name']
-            pr_sec = request.form['pr_sec']
+            d = request.form
             #add here queries
             return render_template('program.html')
     return render_template('program.html')
 
-@app.route('/executive.html', methods=['GET', 'POST'])
+@app.route('/executive.html', methods=['GET', 'POST']) #checked
 def executive():
     if request.method == 'POST':
         insert = request.form.get("insert")
@@ -305,22 +319,17 @@ def executive():
         update = request.form.get("update")
         if insert is not None:
             print("insert:")
-            ex_f_name = request.form['ex_f_name']
-            ex_l_name = request.form['ex_l_name']
+            d = request.form
             #add here queries
             return render_template('executive.html')
         if update is not None:
             print("update:")
-            new_ex_f_name = request.form['new_ex_f_name']
-            new_ex_l_name = request.form['new_ex_l_name']
-            old_ex_f_name = request.form['old_ex_f_name']
-            old_ex_l_name = request.form['old_ex_l_name']
+            d = request.form
             #add here queries
             return render_template('executive.html')
         if delete is not None:
             print("delete:")
-            ex_f_name = request.form['ex_f_name']
-            ex_l_name = request.form['ex_l_name']
+            d = request.form
             #add here queries
             return render_template('executive.html')
     return render_template('executive.html')
@@ -333,23 +342,199 @@ def researher():
         update = request.form.get("update")
         if insert is not None:
             print('insert')
-            tup = request.form
-            #get vars for dict tup
+            d = request.form
+            #get vars for dict d
             #add here queries
             return render_template('researcher.html')
         if update is not None:
             print('update')
-            tup = request.form
-            #get vars for dict tup
+            d = request.form
+            #get vars for dict d
             #add here queries
             return render_template('researcher.html')
         if delete is not None:
             print('delete')
-            tup = request.form
-            #get vars for dict tup
+            d = request.form
+            #get vars for dict d
             #add here queries
             return render_template('researcher.html')
     return render_template('researcher.html')
+
+
+@app.route('/phones.html', methods=['GET', 'POST']) #checked
+def phones():
+    if request.method == 'POST':
+        insert = request.form.get("insert")
+        delete = request.form.get("delete")
+        update = request.form.get("update")
+        if insert is not None:
+            print("insert")
+            d = request.form
+            print(d)
+            #get vars for dict d
+            #add here queries
+            return render_template('phones.html')
+        if update is not None:
+            print("update")
+            d = request.form
+            print(d)
+            #get vars for dict d
+            #add here queries
+            return render_template('phones.html')
+        if delete is not None:
+            print("delete")
+            d = request.form
+            print(d)
+            #get vars for dict d
+            #add here queries
+            return render_template('phones.html')
+    return render_template('phones.html')
+
+@app.route('/works_on_project.html', methods=['GET', 'POST']) #checked
+def works_on_project():
+    if request.method == 'POST':
+        insert = request.form.get("insert")
+        delete = request.form.get("delete")
+        update = request.form.get("update")
+        if insert is not None:
+            print("insert")
+            d = request.form
+            print(d)
+            #get vars for dict d
+            #add here queries
+            return render_template('works_on_project.html')
+        if update is not None:
+            print("update")
+            d = request.form
+            print(d)
+            #get vars for dict d
+            #add here queries
+            return render_template('works_on_project.html')
+        if delete is not None:
+            print("delete")
+            d = request.form
+            print(d)
+            #get vars for dict d
+            #add here queries
+            return render_template('works_on_project.html')
+    return render_template('works_on_project.html')
+
+@app.route('/organization.html', methods=['GET', 'POST']) #checked
+def organization():
+    if request.method == 'POST':
+        insert = request.form.get("insert")
+        delete = request.form.get("delete")
+        update = request.form.get("update")
+        if insert is not None:
+            print("insert")
+            d = request.form
+            print(d)
+            #get vars for dict d
+            #add here queries
+            return render_template('organization.html')
+        if update is not None:
+            print("update")
+            d = request.form
+            print(d)
+            #get vars for dict d
+            #add here queries
+            return render_template('organization.html')
+        if delete is not None:
+            print("delete")
+            d = request.form
+            print(d)
+            #get vars for dict d
+            #add here queries
+            return render_template('organization.html')
+    return render_template('organization.html')
+
+@app.route('/deliverable.html', methods=['GET', 'POST']) #checked
+def deliverable():
+    if request.method == 'POST':
+        insert = request.form.get("insert")
+        delete = request.form.get("delete")
+        update = request.form.get("update")
+        if insert is not None:
+            print("insert")
+            d = request.form
+            print(d)
+            #get vars for dict d
+            #add here queries
+            return render_template('deliverable.html')
+        if update is not None:
+            print("update")
+            d = request.form
+            print(d)
+            #get vars for dict d
+            #add here queries
+            return render_template('deliverable.html')
+        if delete is not None:
+            print("delete")
+            d = request.form
+            print(d)
+            #get vars for dict d
+            #add here queries
+            return render_template('deliverable.html')
+    return render_template('deliverable.html')
+
+@app.route('/evaluation.html', methods=['GET', 'POST']) #checked
+def evaluation():
+    if request.method == 'POST':
+        insert = request.form.get("insert")
+        delete = request.form.get("delete")
+        update = request.form.get("update")
+        if insert is not None:
+            print("insert")
+            d = request.form
+            print(d)
+            #get vars for dict d
+            #add here queries
+            return render_template('evaluation.html')
+        if update is not None:
+            print("update")
+            d = request.form
+            print(d)
+            #get vars for dict d
+            #add here queries
+            return render_template('evaluation.html')
+        if delete is not None:
+            print("delete")
+            d = request.form
+            print(d)
+            #get vars for dict d
+            #add here queries
+            return render_template('evaluation.html')
+    return render_template('evaluation.html')
+
+@app.route('/project.html', methods=['GET', 'POST']) #checked
+def project():
+    if request.method == 'POST':
+        insert = request.form.get("insert")
+        delete = request.form.get("delete")
+        update = request.form.get("update")
+        if insert is not None:
+            print("insert")
+            d = request.form
+            print(d)
+            #get vars for dict d
+            #add here queries
+            return render_template('project.html')
+        if update is not None:
+            print("update")
+            d = request.form
+            print(d)
+            #get vars for dict d
+            #add here queries
+            return render_template('project.html')
+        if delete is not None:
+            print("delete")
+            d = request.form
+            print(d)
+            #get vars for dict d
+            #add here queries
+            return render_template('project.html')
+    return render_template('project.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
