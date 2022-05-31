@@ -24,18 +24,6 @@
         <a class="active" href="page_9.html">Edit Data</a>
     </div>
     <div class="pick_table">
-        1. Insert
-    </div>
-    <div class="search_form" action="">
-        <form  method="post" >
-            <label for="project">Organization name:</label>
-            <input type="text" id="org_name" name="org_name"><br><br>
-            <label for="project">Equity:</label>
-            <input type="text" id="equity" name="equity"><br><br>
-            <input type="submit" value="Submit" name="insert">
-        </form>
-    </div>
-    <div class="pick_table">
         2. Update:
     </div>
     <div class="search_form" action="">
@@ -48,14 +36,19 @@
         </form>
     </div>
     <div class="pick_table">
-        3. Delete:
+        4. Data:
     </div>
-    <div class="search_form" action="">
-        <form method="post">
-            <label for="project">Organization name:</label>
-            <input type="text" id="org_name" name="org_name"><br><br>
-            <input type="submit" value="Submit" name="delete">
-        </form>
+    <div class="table-sec">
+        <table border=1>
+            <th>Organization name</th>
+            <th>Equity</th>
+            {% for tuple in tuples %}
+            <tr>
+                <td>{{tuple[0]}}</td>
+                <td>{{tuple[1]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
 </body>
 </html>

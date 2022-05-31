@@ -75,3 +75,26 @@
             <input type="submit" value="Submit" name="delete">
           </form>
     </div>
+    <div class="pick_table">
+        4. Data:
+    </div>
+    <div class="table-sec">
+        <table border=1>
+            <th>Organization name</th>
+            <th>Abbreviation</th>
+            <th>Post code</th>
+            <th>Street</th>
+            <th>City</th>
+            <th>Type</th>
+            {% for tuple in tuples %}
+            <tr>
+                <td>{{tuple[0]}}</td>
+                <td>{{tuple[1]}}</td>
+                <td>{{tuple[2]}}</td>
+                <td>{{tuple[3]}}</td>
+                <td>{{tuple[4]}}</td>
+                <td>{{tuple[5]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>

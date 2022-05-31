@@ -246,7 +246,15 @@ def page_9():
         if table == 9:
             return redirect('/works_on_project.html')
         if table == 10:
-            return redirect('phones.html')
+            return redirect('/phones.html')
+        if table == 11:
+            return redirect('/sf_belongs.html')
+        if table == 12:
+            return redirect('/university.html')
+        if table == 13:
+            return redirect('/corporation.html')
+        if table == 14:
+            return redirect('research_center.html')
     return render_template('page_9.html')
 
 @app.route('/sf.html', methods=['GET', 'POST']) #checked 
@@ -749,18 +757,161 @@ def project():
             print("update")
             d = request.form
             print(d)
-            #get vars for dict d
-            #add here queries
+            old_pr = d['old_pr']
+            title = d['title']
+            amount = d['amount']
+            start_date = d['start_date']
+            end_date = d['end_date']
+            pr_desc = d['pr_desc']
+            org_name = d['org_name']
+            pr_name = d['pr_name']
+            l_r_f_n = d['l_r_f_n']
+            l_r_l_n = d['l_r_l_n']
+            l_r_bd = d['l_r_bd']
+            ex_f_name = d['ex_f_name']
+            ex_l_name = d['ex_l_name']
+            cur = mysql.connection.cursor()
+            if amount != '':
+                res = cur.execute("""Update Project set Amount = %(a)s where Title = %(b)s""",{'a':amount,'b':old_pr})
+            if start_date != '':
+                res = cur.execute("""Update Project set Start_date = %(a)s where Title = %(b)s
+                """,{'a':start_date,'b':old_pr})
+            if end_date != '':
+                res = cur.execute("""Update Project set End_date = %(a)s 
+                where title = %(b)s""",{'a':end_date,'b':old_pr})
+            if pr_desc != '':
+                res = cur.execute("""Update Project set Project_description = %(a)s 
+                where title = %(b)s""",{'a':pr_desc,'b':old_pr})
+            if org_name != '':
+               res = cur.execute("""set @Organization = (select Organization_id from Organizations 
+                         where Org_name = %(x)s)""",{'x':org_name})
+               res = cur.execute("""Update Project set Organization_id = @Organization 
+               where title = %(b)s""",{'b':old_pr})
+            if l_r_f_n != '' and l_r_l_n !='' and l_r_bd != '':
+               res = cur.execute("""set @Researcher = (select Researcher_id from Researcher where First_name = %(x)s and
+                                    Last_name = %(y)s and Birthdate = %(z)s)""",{'x':l_r_f_n,'y':l_r_l_n,'z':l_r_bd})
+               res = cur.execute("""Update Project set Researcher_id = @Researcher 
+               where title = %(b)s""",{'b':old_pr})
+            if ex_f_name != '' and ex_l_name != '':
+               res = cur.execute("""set @Executive = (select Executive_id from Executive where First_name = %(x)s and
+                        Last_name = %(y)s)""",{'x':ex_f_name,'y':ex_l_name})
+               res = cur.execute("""Update Project set Executive_id = @Executive 
+               where title = %(b)s""",{'b':old_pr})
+            if pr_name != '':
+                res = cur.execute("""set @Program = (select Program_id from Program where Program_name = %(x)s)""",{'x':pr_name})
+                res = cur.execute("""Update Project set Program_id = @Program where title = %(a)s""",{'a':old_pr})
+            if title != '':
+                res = cur.execute("""Update Project set Title = %(a)s where Title = %(b)s """,{'a':title,'b':old_pr})
+            mysql.connection.commit()
+            cur.close()
             return render_template('project.html')
         if delete is not None:
             print("delete")
             d = request.form
             print(d)
-            #get vars for dict d
-            #add here queries
+            pr_title = d['pr_title']
+            cur = mysql.connection.cursor()
+            res = cur.execute("""Delete from Project where Title = %(x)s""",{'x':pr_title})
+            mysql.connection.commit()
+            cur.close()
             return render_template('project.html')
     return render_template('project.html')
 
+@app.route('/sf_belongs.html', methods=['GET', 'POST'])
+def sf_belongs():
+    if request.method == 'POST':
+        insert = request.form.get("insert")
+        delete = request.form.get("delete")
+        if insert is not None:
+            print("insert")
+            d = request.form
+            sf = d['sf']
+            pr_name = d['pr_name']
+            cur = mysql.connection.cursor()
+            res = cur.execute("""set @Udata = (select Scientific_field_id from Scientific_field where Sf_name = %(x)s)""",{'x': sf})
+            res = cur.execute("""set @Udata2 = (select Project_id from Project where Title = %(y)s)""",{'y':pr_name})
+            res = cur.execute("""insert into sf_belongs(Project_id, Scientific_field_id) 
+            values(@Udata2, @Udata)""")
+            mysql.connection.commit()
+            cur.close()
+            print(d)
+            return render_template('/sf_belongs.html')
+        if delete is not None:
+            print("delete")
+            d = request.form
+            sf = d['sf']
+            pr_name = d['pr_name']
+            cur = mysql.connection.cursor()
+            res = cur.execute("""set @Udata = (select Scientific_field_id from Scientific_field where Sf_name = %(x)s)""",{'x': sf})
+            res = cur.execute("""set @Udata2 = (select Project_id from Project where Title = %(y)s)""",{'y':pr_name})
+            res = cur.execute("""delete from Sf_belongs where Scientific_field_id = @Udata and Project_id = @Udata2""")
+            mysql.connection.commit()
+            cur.close()
+            print(d)
+            return render_template('/sf_belongs.html')
+    return render_template('/sf_belongs.html')
+
+@app.route('/university.html', methods=['GET', 'POST'])
+def university():
+    if request.method == 'POST':
+        update = request.form.get("update")
+        if update is not None:
+            print("update")
+            d = request.form
+            print(d)
+            org_name = d['org_name']
+            budget = d['new_budget_ministry']
+            cur = mysql.connection.cursor()
+            res = cur.execute("""set @Udata = (select Organization_id from Organizations where Org_name = %(x)s)""",{'x': org_name})
+            res = cur.execute("""update University set Budget_ministry = %(x)s where Organization_id = @Udata""",{'x':budget})
+            mysql.connection.commit()
+            cur.close()
+            return render_template('/university.html')
+    return render_template('/university.html')
+
+@app.route('/corporation.html', methods=['GET', 'POST'])
+def corporation():
+    if request.method == 'POST':
+        insert = request.form.get("insert")
+        update = request.form.get("update")
+        delete = request.form.get("delete")
+        if update is not None:
+            print("update")
+            d = request.form
+            print(d)
+            org_name = d['org_name']
+            equity  = d['new_equity']
+            cur = mysql.connection.cursor()
+            res = cur.execute("""set @Udata = (select Organization_id from Organizations where Org_name = %(x)s)""",{'x': org_name})
+            res = cur.execute("""update Corporation set equity = %(x)s where Organization_id = @Udata""",{'x': equity})
+            mysql.connection.commit()
+            cur.close()
+            return render_template('/corporation.html')
+    return render_template('/corporation.html')
+
+@app.route('/research_center.html', methods=['GET', 'POST'])
+def research_center():
+    if request.method == 'POST':
+        insert = request.form.get("insert")
+        update = request.form.get("update")
+        delete = request.form.get("delete")
+        if update is not None:
+            print("update")
+            d = request.form
+            print(d)
+            org_name = d['org_name']
+            budget_min = d['new_budget_ministry']
+            budget_pri = d['new_budget_private_actions']
+            cur = mysql.connection.cursor()
+            res = cur.execute("""set @Udata = (select Organization_id from Organizations where Org_name = %(x)s)""",{'x': org_name})
+            if budget_min != '':
+                res = cur.execute("""update Research_center set Budget_ministry = %(x)s where Organization_id = @Udata""",{'x': budget_min})
+            if budget_pri !='':
+                res = cur.execute("""update Research_center set Budget_private = %(x)s where Organization_id = @Udata""",{'x': budget_pri})
+            mysql.connection.commit()
+            cur.close()
+            return render_template('/research_center.html')
+    return render_template('/research_center.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

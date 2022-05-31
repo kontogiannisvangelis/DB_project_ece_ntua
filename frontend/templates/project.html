@@ -82,16 +82,6 @@
             <input type="date" id="end_date" name="end_date"><br><br>
             <label for="project">Project description:</label>
             <input type="text" id="pr_desc" name="pr_desc"><br><br>
-            <label for="project">Evaluation date:</label>
-            <input type="text" id="eval_date" name="eval_date"><br><br>
-            <label for="project">Evaluation grade:</label>
-            <input type="text" id="eval_grade" name="eval_grade"><br><br>
-            <label for="project">Evaluator's first name:</label>
-            <input type="text" id="eval_f_name" name="eval_f_name"><br><br>
-            <label for="project">Evaluator's last name:</label>
-            <input type="text" id="eval_l_name" name="eval_l_name"><br><br>
-            <label for="project">Evaluator's birthdate:</label>
-            <input type="text" id="eval_bday" name="eval_bday"><br><br>
             <label for="project"> Organization name:</label>
             <input type="text" id="org_name" name="org_name"><br><br>
             <label for="project">Program name:</label>
@@ -119,4 +109,33 @@
             <input type="text" id="pr_title" name="pr_title"><br><br>
             <input type="submit" value="Submit" name="delete">
         </form>
+    </div>
+    <div class="pick_table">
+        4. Data:
+    </div>
+    <div class="table-sec">
+        <table border=1>
+            <th>Project title</th>
+            <th>Amount</th>
+            <th>Start date</th>
+            <th>End date</th>
+            <th>Project description</th>
+            <th>Program name</th>
+            <th>Leading researcher name</th>
+            <th>Executive name</th>
+            <th>Organization name</th>
+            {% for tuple in tuples %}
+            <tr>
+                <td>{{tuple[0]}}</td>
+                <td>{{tuple[1]}}</td>
+                <td>{{tuple[2]}}</td>
+                <td>{{tuple[3]}}</td>
+                <td>{{tuple[4]}}</td>
+                <td>{{tuple[5]}}</td>
+                <td>{{tuple[6]}}</td>
+                <td>{{tuple[7]}}</td>
+                <td>{{tuple[8]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
