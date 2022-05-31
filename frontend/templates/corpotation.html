@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>H.F.R.I</title>
+    <link type="text/css" rel="stylesheet" href="/static/main.css"> 
+</head>
+<body>
+    <div class="logo">
+        <img src="/static/HFRI_LOGO_SMALL.png" alt="Logo photo">
+    </div>
+    <div class="topnav">
+        <a href="{{url_for('index')}}">Home</a>
+        <a href="page_1.html">Search per condition</a>
+        <a href="page_2.html">Views</a>
+        <a href="page_3.html">Scientific Fields</a>
+        <a href="page_4.html">Organizations</a>
+        <a href="page_5.html">Interdisciplinary Research Programmes</a>
+        <a href="page_6.html">Young Researchers</a>
+        <a href="page_7.html">Top 5 Executives</a>
+        <a href="page_8.html">Researchers</a>
+        <a class="active" href="page_9.html">Edit Data</a>
+    </div>
+    <div class="pick_table">
+        1. Insert
+    </div>
+    <div class="search_form" action="">
+        <form  method="post" >
+            <label for="project">Organization name:</label>
+            <input type="text" id="org_name" name="org_name"><br><br>
+            <label for="project">Equity:</label>
+            <input type="text" id="equity" name="equity"><br><br>
+            <input type="submit" value="Submit" name="insert">
+        </form>
+    </div>
+    <div class="pick_table">
+        2. Update:
+    </div>
+    <div class="search_form" action="">
+        <form  method="post" >
+            <label for="project">Organization name:</label>
+            <input type="text" id="org_name" name="org_name"><br><br>
+            <label for="project">New Equity:</label>
+            <input type="text" id="new_equity" name="new_equity"><br><br>
+            <input type="submit" value="Submit" name="update">
+        </form>
+    </div>
+    <div class="pick_table">
+        3. Delete:
+    </div>
+    <div class="search_form" action="">
+        <form method="post">
+            <label for="project">Organization name:</label>
+            <input type="text" id="org_name" name="org_name"><br><br>
+            <input type="submit" value="Submit" name="delete">
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>H.F.R.I</title>
+    <link type="text/css" rel="stylesheet" href="/static/main.css"> 
+</head>
+<body>
+    <div class="logo">
+        <img src="/static/HFRI_LOGO_SMALL.png" alt="Logo photo">
+    </div>
+    <div class="topnav">
+        <a href="{{url_for('index')}}">Home</a>
+        <a href="page_1.html">Search per condition</a>
+        <a href="page_2.html">Views</a>
+        <a href="page_3.html">Scientific Fields</a>
+        <a href="page_4.html">Organizations</a>
+        <a href="page_5.html">Interdisciplinary Research Programmes</a>
+        <a href="page_6.html">Young Researchers</a>
+        <a href="page_7.html">Top 5 Executives</a>
+        <a href="page_8.html">Researchers</a>
+        <a href="page_9.html">Researchers</a>
+        <a class="active" href="page_10.html">Read</a>
+    </div>
+    <div class="pick_table">
+        2. Choose a table:
+    </div>
+    <div class="radio">  
+      <form method="POST">
+        <label class="radio-but" >
+          <input type="radio" name="table" value="1"/>Scientific field
+        </label><br>
+        <label class="radio-but" >
+            <input type="radio" name="table" value="2"/>Executive
+        </label><br>
+        <label class="radio-but" >
+          <input type="radio" name="table" value="3"/>Program
+        </label><br>
+        <label class="radio-but" >
+            <input type="radio" name="table" value="4"/>Organization
+        </label><br>
+        <label class="radio-but" >
+          <input type="radio" name="table" value="5"/>Researcher
+        </label><br>
+        <label class="radio-but" >
+          <input type="radio" name="table" value="6"/>Project
+        </label><br>
+        <label class="radio-but" >
+          <input type="radio" name="table" value="7"/>Evaluation
+        </label><br>
+        <label class="radio-but" >
+          <input type="radio" name="table" value="8"/>Deliverable
+        </label><br>
+        <label class="radio-but" >
+          <input type="radio" name="table" value="9"/>Works on project 
+        </label><br>
+        <label class="radio-but" >
+          <input type="radio" name="table" value="10"/>Organization's phones 
+        </label><br><br>
+        <label ><input type="submit" name="Submit" class="form-submit-button"></label>
+      </form>
+    </div>
+    </body>
