@@ -26,4 +26,16 @@
     <div class="table-title">
         Projects per researcher:
     </div>
+    <div class="table-sec">
+        <table border=1>
+            <th>Researcher's name</th>
+            <th>Project title</th>
+            {% for tuple in tuples %}
+            <tr>
+                <td>{{tuple[0]}}</td>
+                <td>{{tuple[1]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 </body>

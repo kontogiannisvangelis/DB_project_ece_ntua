@@ -96,11 +96,17 @@ def page_1_1():
 
 @app.route('/page_2_1.html')
 def page_2_1():
-    return render_template('page_2_1.html')
+    cur = mysql.connection.cursor()
+    res = cur.execute("select * from projects_per_researcher")
+    tuples = cur.fetchall()
+    return render_template('page_2_1.html', tuples=tuples)
 
 @app.route('/page_2_2.html')
 def page_2_2():
-    return render_template('page_2_2.html')
+    cur = mysql.connection.cursor()
+    res = cur.execute("select * from projects_per_program")
+    tuples = cur.fetchall()
+    return render_template('page_2_2.html', tuples=tuples)
 
 @app.route('/page_2.html')
 def page_2():
@@ -259,6 +265,9 @@ def page_9():
 
 @app.route('/sf.html', methods=['GET', 'POST']) #checked 
 def sf():
+    cur = mysql.connection.cursor()
+    res = cur.execute("select Sf_name from Scientific_field")
+    tuples = cur.fetchall()
     if request.method == 'POST':
         insert = request.form.get("insert")
         delete = request.form.get("delete")
@@ -270,7 +279,7 @@ def sf():
             res = cur.execute("""insert into Scientific_field(Scientific_field_id, Sf_name) values(NULL, %(x)s)""", {'x': sf})
             mysql.connection.commit()
             cur.close()
-            return render_template('sf.html')
+            return render_template('sf.html', tuples=tuples)
         if update is not None:
             d = request.form
             new_sf = d['new_sf']
@@ -279,7 +288,7 @@ def sf():
             res = cur.execute("""Update Scientific_field set Sf_name = %(y)s where  Sf_name = %(x)s""", {'x': old_sf,'y': new_sf})
             mysql.connection.commit()
             cur.close()
-            return render_template('sf.html')
+            return render_template('sf.html', tuples=tuples)
         if delete is not None:
             d = request.form
             sf = d['sf']
@@ -287,12 +296,15 @@ def sf():
             res = cur.execute("""Delete from Scientific_field where Sf_name = %(y)s""", {'y': sf})
             mysql.connection.commit()
             cur.close()
-            return render_template('sf.html')
-    return render_template('sf.html')
+            return render_template('sf.html', tuples=tuples)
+    return render_template('sf.html', tuples=tuples)
     
 
 @app.route('/program.html', methods=['GET', 'POST']) #checked
 def program():
+    cur = mysql.connection.cursor()
+    res = cur.execute("select Program_name, Program_section from Program")
+    tuples = cur.fetchall()
     if request.method == 'POST':
         insert = request.form.get("insert")
         delete = request.form.get("delete")
@@ -306,7 +318,7 @@ def program():
             res = cur.execute("""insert into Program(Program_id,Program_name,Program_section) values(NULL, %(x)s, %(y)s)""", {'x': pr_name, 'y': pr_sec})
             mysql.connection.commit()
             cur.close()
-            return render_template('program.html')
+            return render_template('program.html', tuples=tuples)
         if update is not None:
             print("update:")
             d = request.form
@@ -320,7 +332,7 @@ def program():
                 res = cur.execute("""UPDATE Program set Program_name =  %(x)s  where Program_name = %(y)s""", {'x': new_pr_name,'y': old_pr_name})
             mysql.connection.commit()
             cur.close()
-            return render_template('program.html')
+            return render_template('program.html', tuples=tuples)
         if delete is not None:
             print("delete:")
             d = request.form
@@ -329,11 +341,14 @@ def program():
             res = cur.execute("""DELETE FROM Program WHERE Program_name =  %(x)s """, {'x':pr_name})
             mysql.connection.commit()
             cur.close()
-            return render_template('program.html')
-    return render_template('program.html')
+            return render_template('program.html',tuples=tuples)
+    return render_template('program.html',tuples=tuples)
 
 @app.route('/executive.html', methods=['GET', 'POST']) #checked
 def executive():
+    cur = mysql.connection.cursor()
+    res = cur.execute('select concat(r.First_name," ", r.Last_name) as Fullname from Executive r')
+    tuples = cur.fetchall()
     if request.method == 'POST':
         insert = request.form.get("insert")
         delete = request.form.get("delete")
@@ -347,7 +362,7 @@ def executive():
             res = cur.execute("""Insert into Executive (Executive_id, First_name, Last_name) values(null,%(x)s,%(y)s )""", {'x':ex_f_name,'y': ex_l_name})
             mysql.connection.commit()
             cur.close()
-            return render_template('executive.html')
+            return render_template('executive.html',tuples=tuples)
         if update is not None:
             print("update:")
             d = request.form
@@ -360,7 +375,7 @@ def executive():
                                  where First_name = %(z)s and Last_name = %(w)s""", {'x':new_ex_f_name,'y': new_ex_l_name,'z':old_ex_f_name,'w':old_ex_l_name})
             mysql.connection.commit()
             cur.close()
-            return render_template('executive.html')
+            return render_template('executive.html',tuples=tuples)
         if delete is not None:
             print("delete:")
             d = request.form
@@ -370,11 +385,18 @@ def executive():
             res = cur.execute("""Delete from Executive where First_name = %(x)s and Last_name = %(y)s""", {'x':ex_f_name,'y': ex_l_name})
             mysql.connection.commit()
             cur.close()
-            return render_template('executive.html')
-    return render_template('executive.html')
+            return render_template('executive.html',tuples=tuples)
+    return render_template('executive.html',tuples=tuples)
 
 @app.route('/researcher.html', methods=['GET', 'POST']) #checked
 def researher():
+    cur = mysql.connection.cursor()
+    res = cur.execute("""
+                select concat(r.First_name," ", r.Last_name) as Fullname, r.Birthdate, r.Sex, r.Start_date_work_org, o.org_name
+                from Researcher r
+                inner join Organizations o
+                on o.organization_id = r.organization_id""")
+    tuples = cur.fetchall()
     if request.method == 'POST':
         insert = request.form.get("insert")
         delete = request.form.get("delete")
@@ -394,7 +416,7 @@ def researher():
             values(null,%(x)s,%(y)s,%(w)s,%(z)s,%(q)s,@Udata) """, {'x':r_f_name,'y': r_l_name,'z':r_sex,'w':r_bday,'q':st_d_work_org})
             mysql.connection.commit()
             cur.close()
-            return render_template('researcher.html')
+            return render_template('researcher.html',tuples=tuples)
         if update is not None:
             print('update')
             d = request.form
@@ -435,7 +457,7 @@ def researher():
                                     and Birthdate = @old_bday """)
             mysql.connection.commit()
             cur.close()
-            return render_template('researcher.html')
+            return render_template('researcher.html',tuples=tuples)
         if delete is not None:
             print('delete')
             d = request.form
@@ -447,12 +469,21 @@ def researher():
                               and Last_name = %(y)s and Birthdate = %(z)s""",{'x':r_f_name,'y':r_l_name,'z':r_bday})
             mysql.connection.commit()
             cur.close()
-            return render_template('researcher.html')
-    return render_template('researcher.html')
+            return render_template('researcher.html',tuples=tuples)
+    return render_template('researcher.html',tuples=tuples)
 
 
 @app.route('/phones.html', methods=['GET', 'POST']) #checked
 def phones():
+    cur = mysql.connection.cursor()
+    res = cur.execute("""
+            select p.phone_number, o.Org_name
+            from Organization_phones p
+            inner join Organizations o
+            on o.Organization_id = p.Organization_id
+            order by o.Org_name desc
+    """)
+    tuples = cur.fetchall()
     if request.method == 'POST':
         insert = request.form.get("insert")
         delete = request.form.get("delete")
@@ -469,7 +500,7 @@ def phones():
                               values(%(x)s, @UDATA)""", {'x':ph})
             mysql.connection.commit()
             cur.close()
-            return render_template('phones.html')
+            return render_template('phones.html',tuples=tuples)
         if update is not None:
             print("update")
             d = request.form
@@ -484,7 +515,7 @@ def phones():
                                where Phone_number = %(z)s""", {'x':new_ph, 'z':old_ph})
             mysql.connection.commit()
             cur.close()
-            return render_template('phones.html')
+            return render_template('phones.html',tuples=tuples)
         if delete is not None:
             print("delete")
             d = request.form
@@ -494,15 +525,26 @@ def phones():
             res = cur.execute("""DELETE FROM Organization_phones where Phone_number = %(x)s""", {'x':ph})
             mysql.connection.commit()
             cur.close()
-            return render_template('phones.html')
-    return render_template('phones.html')
+            return render_template('phones.html',tuples=tuples)
+    return render_template('phones.html',tuples=tuples)
 
 @app.route('/works_on_project.html', methods=['GET', 'POST']) #checked
 def works_on_project():
+    cur = mysql.connection.cursor()
+    res = cur.execute("""
+            select p.Title, concat(r.First_name," ", r.Last_name) as Fullname
+            from Works_on_project w
+            inner join 
+            Project p
+            on p.project_id = w.project_id
+            inner join
+            Researcher r
+            on r.Researcher_id = w.Researcher_id
+    """)
+    tuples = cur.fetchall()
     if request.method == 'POST':
         insert = request.form.get("insert")
         delete = request.form.get("delete")
-        update = request.form.get("update")
         if insert is not None:
             print("insert")
             d = request.form
@@ -518,7 +560,7 @@ def works_on_project():
             res = cur.execute("""INSERT INTO Works_on_Project(Project_id,Researcher_id) values(@UDATA , @UDATA2) """)
             mysql.connection.commit()
             cur.close()
-            return render_template('works_on_project.html')
+            return render_template('works_on_project.html',tuples=tuples)
         if delete is not None:
             print("delete")
             d = request.form
@@ -534,11 +576,16 @@ def works_on_project():
             res = cur.execute("""DELETE FROM Works_on_Project WHERE Project_id = @UDATA and Researcher_id = @UDATA2 """)
             mysql.connection.commit()
             cur.close()
-            return render_template('works_on_project.html')
-    return render_template('works_on_project.html')
+            return render_template('works_on_project.html',tuples=tuples)
+    return render_template('works_on_project.html',tuples=tuples)
 
 @app.route('/organization.html', methods=['GET', 'POST']) #checked
 def organization():
+    cur = mysql.connection.cursor()
+    res = cur.execute("""
+            select o.Org_name, o.Abbreviation, o.Post_code,o.Street, o.City, o.Org_type from Organizations o
+    """)
+    tuples = cur.fetchall()
     if request.method == 'POST':
         insert = request.form.get("insert")
         delete = request.form.get("delete")
@@ -559,7 +606,7 @@ def organization():
                                  values(null,%(x)s, %(y)s,%(z)s,%(w)s,%(f)s,%(o)s)""", {'x': org_name,'y': abr, 'z': ps, 'w':stre, 'f':city, 'o':org_type})
             mysql.connection.commit()
             cur.close()
-            return render_template('organization.html')
+            return render_template('organization.html',tuples=tuples)
         if update is not None:
             print("update")
             d = request.form
@@ -584,7 +631,7 @@ def organization():
                 res = cur.execute("""UPDATE Organizations set Org_name = %(o)s where Org_name = %(x)s""", {'o': org_name,'x':old_org_name})
             mysql.connection.commit()
             cur.close()
-            return render_template('organization.html')
+            return render_template('organization.html',tuples=tuples)
         if delete is not None:
             print("delete")
             d = request.form
@@ -596,11 +643,19 @@ def organization():
             cur.close()
             #get vars for dict d
             #add here queries
-            return render_template('organization.html')
-    return render_template('organization.html')
+            return render_template('organization.html',tuples=tuples)
+    return render_template('organization.html',tuples=tuples)
 
 @app.route('/deliverable.html', methods=['GET', 'POST']) #checked
 def deliverable():
+    cur = mysql.connection.cursor()
+    res = cur.execute("""
+            select p.Title, d.Title,d.deliv_description, d.delivery_date 
+            from Deliverable d
+            inner join Project p
+            on p.Project_id = d.Project_id
+    """)
+    tuples = cur.fetchall()
     if request.method == 'POST':
         insert = request.form.get("insert")
         delete = request.form.get("delete")
@@ -619,7 +674,7 @@ def deliverable():
                                 values(null, @udata,%(x)s,%(y)s,%(z)s)""",{'x':title,'y':del_desc,'z':del_date})
             mysql.connection.commit()
             cur.close()
-            return render_template('deliverable.html')
+            return render_template('deliverable.html',tuples=tuples)
         if update is not None:
             print("update")
             d = request.form
@@ -643,7 +698,7 @@ def deliverable():
                                   where Title = %(y)s and Project_id = @udata""",{'x':title,'y':old_title})
             mysql.connection.commit()
             cur.close()
-            return render_template('deliverable.html')
+            return render_template('deliverable.html',tuples=tuples)
         if delete is not None:
             print("delete")
             d = request.form
@@ -655,22 +710,25 @@ def deliverable():
             res = cur.execute("""delete from deliverable where title = %(x)s and Project_id = @udata""",{'x':title})
             mysql.connection.commit()
             cur.close()
-            return render_template('deliverable.html')
-    return render_template('deliverable.html')
+            return render_template('deliverable.html',tuples=tuples)
+    return render_template('deliverable.html',tuples=tuples)
 
 @app.route('/evaluation.html', methods=['GET', 'POST']) #checked
 def evaluation():
+    cur = mysql.connection.cursor()
+    res = cur.execute("""
+           select p.Title, e.Eval_date,e.Grade,concat(r.First_name," ",r.Last_name) as fullname
+           from Evaluation e 
+           inner join Project p
+           on p.Evaluation_id = e.Evaluation_id
+           inner join Researcher r
+           on r.Researcher_id = e.Researcher_id
+    """)
+    tuples = cur.fetchall()
     if request.method == 'POST':
-        insert = request.form.get("insert")
         delete = request.form.get("delete")
         update = request.form.get("update")
-        if insert is not None:
-            print("insert")
-            d = request.form
-            print(d)
-            #get vars for dict d
-            #add here queries
-            return render_template('evaluation.html')
+       
         if update is not None:
             print("update")
             d = request.form
@@ -686,7 +744,7 @@ def evaluation():
                 res = cur.execute("""update evaluation set grade = %(o)s where evaluation_id = @udata""",{'o':grade})
             mysql.connection.commit()
             cur.close()
-            return render_template('evaluation.html')
+            return render_template('evaluation.html',tuples=tuples)
         if delete is not None:
             print("delete")
             d = request.form
@@ -697,11 +755,27 @@ def evaluation():
             res = cur.execute("""delete from evaluation where evaluation_id = @udata""")
             mysql.connection.commit()
             cur.close()
-            return render_template('evaluation.html')
-    return render_template('evaluation.html')
+            return render_template('evaluation.html',tuples=tuples)
+    return render_template('evaluation.html',tuples=tuples)
 
 @app.route('/project.html', methods=['GET', 'POST']) #checked
 def project():
+    cur = mysql.connection.cursor()
+    res = cur.execute("""
+           select p.Title, p.Amount, p.Start_date, p.End_date, p.Project_description, pr.Program_name, concat(r.First_name," ",r.Last_name) as researcher,
+           concat(ex.First_name," ",ex.Last_name), o.Org_name
+           from Project p
+           inner join Program pr
+           on p.Program_id = pr.Program_id
+           inner join 
+           Researcher r 
+           on r.Researcher_id = p.Researcher_id
+           inner join Executive ex
+           on ex.Executive_id = p.Executive_id
+           inner join Organizations o
+           on o.Organization_id = p.Organization_id
+    """)
+    tuples = cur.fetchall()
     if request.method == 'POST':
         insert = request.form.get("insert")
         delete = request.form.get("delete")
@@ -752,7 +826,7 @@ def project():
                               """,{'x':amount,'y':title,'z':start_date,'w':end_date,'r':pr_desc})
             mysql.connection.commit()
             cur.close()                  
-            return render_template('project.html')
+            return render_template('project.html',tuples=tuples)
         if update is not None:
             print("update")
             d = request.form
@@ -804,7 +878,7 @@ def project():
                 res = cur.execute("""Update Project set Title = %(a)s where Title = %(b)s """,{'a':title,'b':old_pr})
             mysql.connection.commit()
             cur.close()
-            return render_template('project.html')
+            return render_template('project.html',tuples=tuples)
         if delete is not None:
             print("delete")
             d = request.form
@@ -814,11 +888,24 @@ def project():
             res = cur.execute("""Delete from Project where Title = %(x)s""",{'x':pr_title})
             mysql.connection.commit()
             cur.close()
-            return render_template('project.html')
-    return render_template('project.html')
+            return render_template('project.html',tuples=tuples)
+    return render_template('project.html',tuples=tuples)
 
 @app.route('/sf_belongs.html', methods=['GET', 'POST'])
 def sf_belongs():
+    cur = mysql.connection.cursor()
+    res = cur.execute("""
+            select p.title, s.Sf_name
+            from sf_belongs sf
+            inner join
+            Scientific_field s
+            on s.Scientific_field_id = sf.Scientific_field_id
+            inner join
+            Project p
+            on 
+            p.Project_id = sf.Project_id
+    """)
+    tuples = cur.fetchall()
     if request.method == 'POST':
         insert = request.form.get("insert")
         delete = request.form.get("delete")
@@ -835,7 +922,7 @@ def sf_belongs():
             mysql.connection.commit()
             cur.close()
             print(d)
-            return render_template('/sf_belongs.html')
+            return render_template('/sf_belongs.html', tuples=tuples)
         if delete is not None:
             print("delete")
             d = request.form
@@ -848,11 +935,19 @@ def sf_belongs():
             mysql.connection.commit()
             cur.close()
             print(d)
-            return render_template('/sf_belongs.html')
-    return render_template('/sf_belongs.html')
+            return render_template('/sf_belongs.html', tuples=tuples)
+    return render_template('/sf_belongs.html', tuples=tuples)
 
 @app.route('/university.html', methods=['GET', 'POST'])
 def university():
+    cur = mysql.connection.cursor()
+    res = cur.execute("""
+            select o.Org_name, u.Budget_ministry from
+            University u 
+            inner join Organizations o
+            on o.Organization_id = u.Organization_id
+    """)
+    tuples = cur.fetchall()
     if request.method == 'POST':
         update = request.form.get("update")
         if update is not None:
@@ -866,11 +961,19 @@ def university():
             res = cur.execute("""update University set Budget_ministry = %(x)s where Organization_id = @Udata""",{'x':budget})
             mysql.connection.commit()
             cur.close()
-            return render_template('/university.html')
-    return render_template('/university.html')
+            return render_template('/university.html', tuples=tuples)
+    return render_template('/university.html', tuples=tuples)
 
 @app.route('/corporation.html', methods=['GET', 'POST'])
 def corporation():
+    cur = mysql.connection.cursor()
+    res = cur.execute("""
+            select o.Org_name, c.equity
+            from Corporation c
+            inner join Organizations o
+            on o.Organization_id = c.Organization_id
+    """)
+    tuples = cur.fetchall()
     if request.method == 'POST':
         insert = request.form.get("insert")
         update = request.form.get("update")
@@ -886,11 +989,19 @@ def corporation():
             res = cur.execute("""update Corporation set equity = %(x)s where Organization_id = @Udata""",{'x': equity})
             mysql.connection.commit()
             cur.close()
-            return render_template('/corporation.html')
-    return render_template('/corporation.html')
+            return render_template('/corporation.html', tuples=tuples)
+    return render_template('/corporation.html', tuples=tuples)
 
 @app.route('/research_center.html', methods=['GET', 'POST'])
 def research_center():
+    cur = mysql.connection.cursor()
+    res = cur.execute("""
+            select o.Org_name, r.Budget_ministry, r.Budget_private
+            from Research_center r
+            inner join Organizations o
+            on o.Organization_id = r.Organization_id
+    """)
+    tuples = cur.fetchall()
     if request.method == 'POST':
         insert = request.form.get("insert")
         update = request.form.get("update")
@@ -910,8 +1021,8 @@ def research_center():
                 res = cur.execute("""update Research_center set Budget_private = %(x)s where Organization_id = @Udata""",{'x': budget_pri})
             mysql.connection.commit()
             cur.close()
-            return render_template('/research_center.html')
-    return render_template('/research_center.html')
+            return render_template('/research_center.html', tuples=tuples)
+    return render_template('/research_center.html', tuples=tuples)
 
 if __name__ == '__main__':
     app.run(debug=True)
