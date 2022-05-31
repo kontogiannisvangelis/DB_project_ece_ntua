@@ -16,3 +16,7 @@ LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/Corporation.csv'
 INTO TABLE corporation 
 FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 ROWS;
 
+DELETE FROM Deliverable where Project_id = (select p.Project_id from Project p 
+where p.Organization_id in (10,20,30));
+    
+    
