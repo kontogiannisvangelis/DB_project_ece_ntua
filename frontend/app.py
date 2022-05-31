@@ -719,6 +719,12 @@ def project():
             l_r_bd = d['l_r_bd']
             ex_f_name = d['ex_f_name']
             ex_l_name = d['ex_l_name']
+            if eval_date == '':
+                eval_date = None
+            if amount == '':
+                amount = None
+            if pr_desc == '':
+                pr_desc = None
             cur = mysql.connection.cursor()
             res = cur.execute("""set @Program_data = (select Program_id from Program where Program_name = %(c)s)""",{'c':pr_name})
             res = cur.execute("""set @Researcher = (select Researcher_id from Researcher where 
