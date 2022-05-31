@@ -1,6 +1,6 @@
-DROP SCHEMA IF EXISTS eldik_db;
-CREATE SCHEMA eldik_db;
-USE eldik_db;
+DROP SCHEMA IF EXISTS hfri;
+CREATE SCHEMA hfri;
+USE  hfri;
 
 
 create table Organizations(
@@ -17,8 +17,8 @@ create table Organizations(
     
 create table Researcher(
 	Researcher_id int unsigned  auto_increment, 
-    First_name varchar(20) not null,
-	Last_name varchar(20) not null,
+    First_name varchar(30) not null,
+	Last_name varchar(30) not null,
 	Birthdate date not null,
     Sex varchar(20) default null check (Sex in ('Female', 'Male', 'Other')),
     Start_date_work_org date not null,
@@ -55,7 +55,7 @@ create table corporation(
     
 create table Evaluation(
 	Evaluation_id int unsigned  auto_increment, 
-	Eval_date date not null,
+	Eval_date date,
     Grade int default 0 check(Grade<=100 and Grade>=0),
     Researcher_id int unsigned ,
     Organization_id int unsigned,
@@ -106,15 +106,15 @@ create table Project(
     #Duration derived and check between 1 and 4 years
     Evaluation_id int unsigned not null,  
     Program_id int unsigned not null,
-    Researcher_id int unsigned not null , 
-    Executive_id int unsigned not null ,
+    Researcher_id int unsigned , 
+    Executive_id int unsigned,
 	Organization_id int unsigned not null,
     primary key (Project_id),
-    constraint fk_executive_id_project foreign key(Executive_id) references Executive(Executive_id) on delete restrict on update cascade, #crete trigger that changes null to a person
-    constraint fk_program_id_project foreign key(Program_id) references Program(Program_id) on delete restrict on update cascade,
-	constraint fk_researcher_id_project foreign key(Researcher_id) references Researcher(Researcher_id) on delete restrict on update cascade, #wait answer
-    constraint fk_evaluation_id_project foreign key(Evaluation_id) references Evaluation(Evaluation_id)on delete restrict on update cascade,
-    constraint fk_organization_id_project foreign key(Organization_id) references Organizations(Organization_id) on delete restrict on update cascade #wait answer
+    constraint fk_executive_id_project foreign key(Executive_id) references Executive(Executive_id) on delete set null on update cascade, #crete trigger that changes null to a person
+    constraint fk_program_id_project foreign key(Program_id) references Program(Program_id) on delete cascade on update cascade,
+	constraint fk_researcher_id_project foreign key(Researcher_id) references Researcher(Researcher_id) on delete set null on update cascade, #wait answer
+    constraint fk_evaluation_id_project foreign key(Evaluation_id) references Evaluation(Evaluation_id)on delete cascade on update cascade,
+    constraint fk_organization_id_project foreign key(Organization_id) references Organizations(Organization_id) on delete cascade on update cascade #wait answer
     #add more constrains
     )ENGINE=InnoDB DEFAULT CHARSET=utf8;
     
@@ -130,16 +130,16 @@ create table Works_on_project(
 	Project_id int unsigned,
     Scientific_field_id int unsigned,
     primary key(Project_id,Scientific_field_id),
-    constraint fk_sf_field_sf_belongs foreign key(Scientific_field_id) references Scientific_field(Scientific_field_id) on delete restrict on update cascade,
+    constraint fk_sf_field_sf_belongs foreign key(Scientific_field_id) references Scientific_field(Scientific_field_id) on delete cascade on update cascade,
     constraint fk_project_id_sf_belongs foreign key(Project_id) references Project(Project_id) on delete cascade on update cascade
     )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 create table Deliverable(
 	Deliverable_id int unsigned  auto_increment,
-    Project_id int unsigned,
-    Title varchar(20),
+    Project_id int unsigned not null,
+    Title varchar(30),
     Deliv_description varchar(400) default null,
-    Delivery_date date not null ,
+    Delivery_date date,
     primary key (Deliverable_id, Project_id),
     constraint fk_project_id_deliverable foreign key(Project_id) references Project(Project_id) on delete cascade on update cascade
     )ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -184,8 +184,16 @@ create view young_researchers (rid,counter) as
 			(select Researcher_id from Researcher r where year(curdate()) - year(r.Birthdate) <= 40)
 			order by counter DESC);
             
+create view projects_per_program as
+select pr.program_name, p.title
+from Project p
+inner join program pr on pr.program_id = p.program_id
+order by pr.Program_name;
+
+
+create index idx_full_project_date on project (Start_date, End_date);
+create index idx_researcher on Researcher(First_name, Last_name, Birthdate);
             
-    
 DELIMITER $$
 create trigger evaluator_check before insert on Evaluation
 for each row
@@ -221,10 +229,21 @@ begin
 DELIMITER ;
 
 DELIMITER $$
-create trigger duration_check before insert on Project
+create trigger in_duration_amount_check before insert on Project
 for each row
 begin 
 if (select TIMESTAMPDIFF(Year, new.Start_date, new.End_Date)) not in (1,2,3,4)
+or (new.amount is not null and (select e.Grade from Evaluation e order by Evaluation_id Desc limit 1) < 50)
+then
+signal sqlstate '45000';
+end if;
+end$$
+
+create trigger up_amount_duration_check before update on Project
+for each row
+begin 
+if (select TIMESTAMPDIFF(Year, new.Start_date, new.End_Date)) not in (1,2,3,4)
+or (new.amount is not null and (select e.Grade from Evaluation e order by Evaluation_id Desc limit 1) < 50)
 then
 signal sqlstate '45000';
 end if;
@@ -235,6 +254,8 @@ create trigger Lead_Researcher after insert on Project
  begin
  insert into Works_on_project values(new.Project_id , new.Researcher_id);
  end
+ 
+
  
  
  
