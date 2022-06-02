@@ -255,11 +255,11 @@ end$$
 create trigger up_amount_duration_check before update on Project
 for each row
 begin 
+update Evaluation set Organization_id = new.Organization_id;
 if (select TIMESTAMPDIFF(Year, new.Start_date, new.End_Date)) not in (1,2,3,4)
 or ((new.amount is not null and (select e.Grade from Evaluation e order by Evaluation_id Desc limit 1) < 50))
 then
 signal sqlstate '45000';
-update Evaluation set Organization_id = new.Organization_id;
 end if;
 end$$
 
