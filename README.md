@@ -24,7 +24,7 @@ Listed alphabetically: <br />
 
 ## Database Setup
 1. Create the database with name: 'hfri' password: 'root' and then open a local server on Mysql Workbench and run the Query Schema.
-2. Data import
+2. Data import: <br />
 Enable the appearance of hidden files in Windows <br />
 (Select the Start button, then select Control Panel > Appearance and Personalization.<br />Select Folder Options, then select the View tab.Under Advanced settings, select Show hidden files, folders, and drives, and then select OK) <br />
 Copy the file data to the directory C:\ProgramData\MySQL\MySQL Server 8.0\Uploads.<br />
