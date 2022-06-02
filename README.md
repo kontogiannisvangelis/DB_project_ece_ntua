@@ -23,8 +23,9 @@ Listed alphabetically: <br />
 ![](https://github.com/kontogiannisvangelis/DB_project_ece_ntua/blob/main/Relational%20schema/Relational%20schema.png)
 
 ## Database Setup
-1. Create the database with name: 'hfri' password: 'root' and then open a local server on Mysql Workbench and run the Query Schema.
-2. Data import: <br />
+1. Create connection with name: 'hfri' password: 'root' and configure local server to run on port 3306
+2. Create the database with name: 'hfri' and run the Query Schema.
+3. Data import: <br />
 Enable the appearance of hidden files in Windows <br />
 (Select the Start button, then select Control Panel > Appearance and Personalization.<br />Select Folder Options, then select the View tab.Under Advanced settings, select Show hidden files, folders, and drives, and then select OK) <br />
 Copy the file data to the directory C:\ProgramData\MySQL\MySQL Server 8.0\Uploads.<br />
