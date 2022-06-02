@@ -402,8 +402,17 @@ def executive():
             old_ex_f_name = d['old_ex_f_name']
             old_ex_l_name = d['old_ex_l_name']
             cur = mysql.connection.cursor()
-            res = cur.execute("""Update Executive  set  First_name = %(x)s , Last_name = %(y)s 
-                                 where First_name = %(z)s and Last_name = %(w)s""", {'x':new_ex_f_name,'y': new_ex_l_name,'z':old_ex_f_name,'w':old_ex_l_name})
+            if new_ex_f_name != '':
+                res = cur.execute("""Update Executive  set  First_name = %(x)s 
+                                 where First_name = %(z)s and Last_name = %(w)s""", {'x':new_ex_f_name,'z':old_ex_f_name,'w':old_ex_l_name})
+                res = cur.execute("""set @udata = %(x)s""",{'x':new_ex_f_name})
+                if new_ex_l_name != '':
+                    res = cur.execute("""Update Executive  set  Last_name = %(x)s 
+                                 where First_name = @Udata and Last_name = %(w)s""", {'x':new_ex_l_name,'w':old_ex_l_name})
+            else :
+                if new_ex_l_name != '':
+                    res = cur.execute("""Update Executive  set  Last_name = %(x)s 
+                                 where First_name = %(y)s and Last_name = %(w)s""", {'y':old_ex_f_name,'x':new_ex_l_name,'w':old_ex_l_name})
             mysql.connection.commit()
             cur.close()
             #select
@@ -896,6 +905,7 @@ def evaluation():
            on r.Researcher_id = e.Researcher_id
     """)
     tuples = cur.fetchall()
+    print(tuples)
     if request.method == 'POST':
         delete = request.form.get("delete")
         update = request.form.get("update")
