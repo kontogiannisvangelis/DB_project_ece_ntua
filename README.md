@@ -4,8 +4,8 @@ This is a project for the Databases class in NTUA Electrical and Computer Engine
 ## Contributors
 Listed alphabetically: <br />
 1.Kontogiannis Evangelos (03119104)<br />
-2.Babanis Georgios (03119094)<br />
-3.Boutsini Theodora (03119083)<br />
+2.Babanis Georgios (03119083)<br />
+3.Boutsini Theodora (03119094)<br />
 
 ## Tools
 - Mysql server 8.0.29	
