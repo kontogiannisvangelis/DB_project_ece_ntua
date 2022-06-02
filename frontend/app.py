@@ -279,6 +279,9 @@ def sf():
             res = cur.execute("""insert into Scientific_field(Scientific_field_id, Sf_name) values(NULL, %(x)s)""", {'x': sf})
             mysql.connection.commit()
             cur.close()
+            cur = mysql.connection.cursor()
+            res = cur.execute("select Sf_name from Scientific_field")
+            tuples = cur.fetchall()
             return render_template('sf.html', tuples=tuples)
         if update is not None:
             d = request.form
@@ -288,14 +291,20 @@ def sf():
             res = cur.execute("""Update Scientific_field set Sf_name = %(y)s where  Sf_name = %(x)s""", {'x': old_sf,'y': new_sf})
             mysql.connection.commit()
             cur.close()
+            cur = mysql.connection.cursor()
+            res = cur.execute("select Sf_name from Scientific_field")
+            tuples = cur.fetchall()
             return render_template('sf.html', tuples=tuples)
         if delete is not None:
             d = request.form
             sf = d['sf']
             cur = mysql.connection.cursor()
             res = cur.execute("""Delete from Scientific_field where Sf_name = %(y)s""", {'y': sf})
-            mysql.connection.commit()
+            mysql.connection.commit()   
             cur.close()
+            cur = mysql.connection.cursor()
+            res = cur.execute("select Sf_name from Scientific_field")
+            tuples = cur.fetchall()
             return render_template('sf.html', tuples=tuples)
     return render_template('sf.html', tuples=tuples)
     
