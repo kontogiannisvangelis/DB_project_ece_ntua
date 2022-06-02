@@ -41,6 +41,7 @@ Inserting the data into the database:
 2. run in vscode terminal,
  ```bash
      pip install virtualenv
+     virtualenv env
      set-ExecutionPolicy RemoteSigned -Scope CurrentUser
      env/Scripts/activate
      pip install Flask
