@@ -16,4 +16,4 @@ Listed alphabetically: <br />
 
 
 ## Relational Model
-
+![](https://github.com/kontogiannisvangelis/DB_project_ece_ntua/blob/main/Relational%20schema/Relational%20schema.png)
