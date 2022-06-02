@@ -233,7 +233,8 @@ create trigger in_duration_amount_check before insert on Project
 for each row
 begin 
 if (select TIMESTAMPDIFF(Year, new.Start_date, new.End_Date)) not in (1,2,3,4)
-or (new.amount is not null and (select e.Grade from Evaluation e order by Evaluation_id Desc limit 1) < 50)
+or ((new.amount is not null and (select e.Grade from Evaluation e order by Evaluation_id Desc limit 1) < 50))
+or new.Organization_id in (select r.Organization_id from Researcher r where r.Researcher_id = new.Researcher_id)
 then
 signal sqlstate '45000';
 end if;
@@ -243,7 +244,8 @@ create trigger up_amount_duration_check before update on Project
 for each row
 begin 
 if (select TIMESTAMPDIFF(Year, new.Start_date, new.End_Date)) not in (1,2,3,4)
-or (new.amount is not null and (select e.Grade from Evaluation e order by Evaluation_id Desc limit 1) < 50)
+or ((new.amount is not null and (select e.Grade from Evaluation e order by Evaluation_id Desc limit 1) < 50))
+or new.Organization_id in (select r.Organization_id from Researcher r where r.Researcher_id = new.Researcher_id)
 then
 signal sqlstate '45000';
 end if;
