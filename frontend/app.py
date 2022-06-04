@@ -441,7 +441,8 @@ def researher():
     #select
     cur = mysql.connection.cursor()
     res = cur.execute("""
-                select concat(r.First_name," ", r.Last_name) as Fullname, r.Birthdate, r.Sex, r.Start_date_work_org, o.org_name
+                select concat(r.First_name," ", r.Last_name) as Fullname, r.Birthdate, r.Sex, 
+                r.Start_date_work_org, o.org_name, timestampdiff(year,r.Birthdate,curdate()) as age
                 from Researcher r
                 inner join Organizations o
                 on o.organization_id = r.organization_id""")
@@ -468,7 +469,8 @@ def researher():
             #select
             cur = mysql.connection.cursor()
             res = cur.execute("""
-                        select concat(r.First_name," ", r.Last_name) as Fullname, r.Birthdate, r.Sex, r.Start_date_work_org, o.org_name
+                        select concat(r.First_name," ", r.Last_name) as Fullname, r.Birthdate, r.Sex, 
+                        r.Start_date_work_org, o.org_name, timestampdiff(year,r.Birthdate,curdate()) as age
                         from Researcher r
                         inner join Organizations o
                         on o.organization_id = r.organization_id""")
@@ -517,7 +519,8 @@ def researher():
             #select
             cur = mysql.connection.cursor()
             res = cur.execute("""
-                        select concat(r.First_name," ", r.Last_name) as Fullname, r.Birthdate, r.Sex, r.Start_date_work_org, o.org_name
+                        select concat(r.First_name," ", r.Last_name) as Fullname, r.Birthdate, r.Sex,
+                        r.Start_date_work_org, o.org_name, timestampdiff(year,r.Birthdate,curdate()) as age
                         from Researcher r
                         inner join Organizations o
                         on o.organization_id = r.organization_id""")
@@ -537,7 +540,8 @@ def researher():
             #select
             cur = mysql.connection.cursor()
             res = cur.execute("""
-                        select concat(r.First_name," ", r.Last_name) as Fullname, r.Birthdate, r.Sex, r.Start_date_work_org, o.org_name
+                        select concat(r.First_name," ", r.Last_name) as Fullname, r.Birthdate, r.Sex,
+                        r.Start_date_work_org, o.org_name, timestampdiff(year,r.Birthdate,curdate()) as age
                         from Researcher r
                         inner join Organizations o
                         on o.organization_id = r.organization_id""")
