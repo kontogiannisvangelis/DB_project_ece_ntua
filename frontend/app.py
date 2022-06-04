@@ -986,7 +986,6 @@ def project():
     tuples = cur.fetchall()
     if request.method == 'POST':
         insert = request.form.get("insert")
-        delete = request.form.get("delete")
         update = request.form.get("update")
         if insert is not None:
             print("insert")
@@ -1011,6 +1010,8 @@ def project():
             ex_l_name = d['ex_l_name']
             if eval_date == '':
                 eval_date = None
+            if eval_grade == '':
+                eval_grade = None
             if amount == '':
                 amount = None
             if pr_desc == '':
@@ -1101,33 +1102,6 @@ def project():
                 res = cur.execute("""Update Project set Program_id = @Program where title = %(a)s""",{'a':old_pr})
             if title != '':
                 res = cur.execute("""Update Project set Title = %(a)s where Title = %(b)s """,{'a':title,'b':old_pr})
-            mysql.connection.commit()
-            cur.close()
-            #select
-            cur = mysql.connection.cursor()
-            res = cur.execute("""
-                select p.Title, p.Amount, p.Start_date, p.End_date, p.Project_description, pr.Program_name, concat(r.First_name," ",r.Last_name) as researcher,
-                concat(ex.First_name," ",ex.Last_name), o.Org_name
-                from Project p
-                inner join Program pr
-                on p.Program_id = pr.Program_id
-                inner join 
-                Researcher r 
-                on r.Researcher_id = p.Researcher_id
-                inner join Executive ex
-                on ex.Executive_id = p.Executive_id
-                inner join Organizations o
-                on o.Organization_id = p.Organization_id
-            """)
-            tuples = cur.fetchall()
-            return render_template('project.html',tuples=tuples)
-        if delete is not None:
-            print("delete")
-            d = request.form
-            print(d)
-            pr_title = d['pr_title']
-            cur = mysql.connection.cursor()
-            res = cur.execute("""Delete from Project where Title = %(x)s""",{'x':pr_title})
             mysql.connection.commit()
             cur.close()
             #select
